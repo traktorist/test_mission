@@ -1,0 +1,11 @@
+#main {
+    border: 1px solid;
+}
+
+#menu {
+    height: 50px;
+}
+
+#menu span {
+    text-decoration: underline;
+}

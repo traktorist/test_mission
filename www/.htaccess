@@ -1,4 +1,5 @@
 AddDefaultCharset UTF8
+DirectoryIndex index.html
 
 # PHP error handling for development servers
 php_flag display_startup_errors on

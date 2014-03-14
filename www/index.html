@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Инсталлятор и списки</title>
+
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src="jquery/jquery-2.0.3.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $("#content div, #install_button").hide();
+            window.errors_check = 0;                                    // флаг успешной проверки БД и дампа: 0 - норма, иная цифра - число ошибок
+        });
+
+        /* отображение инсталлятора */
+        function show_install() {
+            $("#content div[name = lists]").hide();
+            $("#content div[name = install]").show();
+
+            /* запросы на проверку соединения с БД и наличия дампа для импорта */
+            post_query_install('install.php', 'check_dump', $("#content span[name = check_dump]"), 'Поиск файла дампа БД...');
+            post_query_install('install.php', 'check_connection', $("#content span[name = check_connection]"), 'Проверка соединения с БД...');
+        }
+
+        /* отображение списков */
+        function show_lists() {
+            var lists_span = $("#content div[name = lists]");
+
+            $("#content div[name = install]").hide();
+            lists_span.show();
+            lists_span.html("Списки Списки");
+        }
+
+        function post_query_install(file, action, field, wait_phrase) {
+            window.errors_check++;
+            field.html(wait_phrase);
+            $.post(file, {
+                action: action
+            }).done(function(response) {
+                        if (response == true) {                         // если проверка дала положительный результат
+                            field.append(' OK');
+                            window.errors_check--;
+                        }
+                        else
+                            field.append(' Fail');
+
+                        show_install_button();
+                    });
+        }
+
+        function show_install_button() {
+            if (window.errors_check == 0)
+                $("#install_button").show();
+        }
+    </script>
+</head>
+<body>
+    <div id="main">
+        <div id="menu">
+            <span name="install" onclick="show_install();">Инсталлятор</span>
+            <span name="lists" onclick="show_lists();">Списки</span>
+        </div>
+
+        <div id="content">
+            <div name="install">
+                <span name="check_dump"></span><br />
+                <span name="check_connection"></span><br />
+                <br />
+                <input id="install_button" type="button" value="Установить!">
+            </div>
+
+            <div name="lists">
+                Списки Списки
+            </div>
+        </div>
+    </div>
+</body>
+</html>
