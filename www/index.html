@@ -9,13 +9,15 @@
     <script>
         $(document).ready(function() {
             $("#content div, #install_button").hide();
-            window.errors_check = 0;                                    // флаг успешной проверки БД и дампа: 0 - норма, иная цифра - число ошибок
         });
 
         /* отображение инсталлятора */
         function show_install() {
             $("#content div[name = lists]").hide();
             $("#content div[name = install]").show();
+            $("#content span[name = check_dump], #content span[name = check_connection], #content span[name = install]").html("");
+
+            window.errors_check = 0;                                    // флаг успешной проверки БД и дампа: 0 - норма, иная цифра - число ошибок
 
             /* запросы на проверку соединения с БД и наличия дампа для импорта */
             post_query_install('install.php', 'check_dump', $("#content span[name = check_dump]"), 'Поиск файла дампа БД...');
@@ -51,6 +53,8 @@
         function show_install_button() {
             if (window.errors_check == 0)
                 $("#install_button").show();
+            else
+                $("#install_button").hide();
         }
     </script>
 </head>
@@ -63,10 +67,11 @@
 
         <div id="content">
             <div name="install">
-                <span name="check_dump"></span><br />
-                <span name="check_connection"></span><br />
+                <span name="check_dump">...</span><br />
+                <span name="check_connection">...</span><br />
+                <span name="install">...</span><br />
                 <br />
-                <input id="install_button" type="button" value="Установить!">
+                <input id="install_button" type="button" value="Установить!" onclick="post_query_install('install.php', 'install', $('#content span[name = install]'), 'Создание таблиц БД...');">
             </div>
 
             <div name="lists">
