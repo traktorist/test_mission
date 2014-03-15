@@ -49,5 +49,4 @@ function install() {
     echo true;
 }
 
-
 ?>
