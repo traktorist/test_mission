@@ -9,6 +9,7 @@
     <script>
         $(document).ready(function() {
             $("#content div[name = install], div[name = lists], #install_button").hide();
+            $('div[name = lists] select').change(function() { sort_select(this); select_select(this); });
         });
 
         /* отображение инсталлятора */
@@ -57,7 +58,8 @@
                         }
                         else {
                             var lists = $.parseJSON(response);
-                            
+                            $('div[name = lists] select option:not([value = "0"])').remove();
+
                             for (var i = 0; i < Object.keys(lists.countries).length; i++)
                                 $('#country select').
                                     append($('<option></option>').
@@ -97,7 +99,31 @@
                 $("#install_button").hide();
         }
 
+        function sort_option(select) {                                              // нет времени объяснять - это работает!
+            if ($(select).data('child') != '') {
+                var selected_id = $(select).find(':selected').val();
+                var child_select = $('#' + $(select).data('child') + ' select');
+                $(child_select).find('option').show();
+                if (selected_id != 0) {
+                    $(child_select).find(':not([data-parent = ' + selected_id + '])').hide();
+                    $(child_select).find('[value = "0"]').show();
+                    if (selected_id != $(child_select).find(':selected').data('parent'))
+                        $(child_select).find('[value = "0"]').prop("selected", "selected");
+                }
 
+                sort_option(child_select);
+            }
+        }
+
+        function select_option(select) {                                              // нет времени объяснять - это работает!
+            if ($(select).data('parent') != '') {
+                var parent_select = $('#' + $(select).data('parent') + ' select');
+                var parent_id = $(select).find(':selected').data('parent');
+                $(parent_select).find('option[value = ' + parent_id + ']').prop("selected", "selected");
+
+                select_option(parent_select);
+            }
+        }
     </script>
 </head>
 <body>
@@ -119,22 +145,22 @@
             <div name="lists">
                 <div id="country">
                     <span class="list_name">Страна</span>
-                    <select>
-                        <option selected>Не выбрана</option>
+                    <select data-parent="" data-child="city">
+                        <option value="0" selected>Не выбрана</option>
                     </select>
                 </div>
 
                 <div id="city">
                     <span class="list_name">Город</span>
-                    <select>
-                        <option selected>Не выбран</option>
+                    <select data-parent="country" data-child="hotel">
+                        <option value="0" selected>Не выбран</option>
                     </select>
                 </div>
 
                 <div id="hotel">
                     <span class="list_name">Гостиница</span>
-                    <select>
-                        <option selected>Не выбран</option>
+                    <select data-parent="city" data-child="">
+                        <option value="0" selected>Не выбран</option>
                     </select>
                 </div>
 
