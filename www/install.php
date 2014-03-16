@@ -24,12 +24,25 @@ switch ($action) {
         install();
         return;
     }
+    case 'load_lists': {
+        load_lists();
+        return;
+    }
     default: {
         echo 'vrotmnenogi!';
         return;
     }
 }
 
+
+function connect_db() {
+    $link = mysql_connect(HOST, USER, PASS);												// коннект с MySQL
+    if (!$link) die('<br />Не могу соединиться с MySQL:<br />'.mysql_error());
+    else {
+        mysql_select_db(DB, $link) or die("<br />Не могу подключиться к базе " . DB . ".<br />".mysql_errno()." - ".mysql_error()."<br />");
+        mysql_set_charset('utf8', $link); 													// установка кодировки соединения с БД
+    }
+}
 
 function check_dump($dump_path) {
     echo file_exists($dump_path);
@@ -58,13 +71,25 @@ function install() {
     echo true;
 }
 
-function connect_db() {
-    $link = mysql_connect(HOST, USER, PASS);												// коннект с MySQL
-    if (!$link) die('<br />Не могу соединиться с MySQL:<br />'.mysql_error());
-    else {
-        mysql_select_db(DB, $link) or die("<br />Не могу подключиться к базе " . DB . ".<br />".mysql_errno()." - ".mysql_error()."<br />");
-        mysql_set_charset('utf8', $link); 													// установка кодировки соединения с БД
+function load_lists() {
+    connect_db();
+
+    $res_countries = mysql_query("SELECT * FROM `countries`");
+    while ($country = mysql_fetch_array($res_countries)) {
+        $countries[] = array($country['id_country'], $country['title']);
     }
+
+    $res_cities = mysql_query("SELECT * FROM `cities`");
+    while ($city = mysql_fetch_array($res_cities)) {
+        $cities[] = array($city['id_city'], $city['title'], $city['id_country']);
+    }
+
+    $res_hotels = mysql_query("SELECT * FROM `hotels`");
+    while ($hotel = mysql_fetch_array($res_hotels)) {
+        $hotels[] = array($hotel['id_hotel'], $hotel['title'], $hotel['id_city']);
+    }
+
+    echo json_encode(array('countries' => $countries, 'cities' => $cities, 'hotels' => $hotels));                                   // пакуем массив сообщений посредством json'а и передаём его обратно в JS
 }
 
 ?>
