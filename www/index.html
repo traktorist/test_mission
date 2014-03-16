@@ -9,7 +9,7 @@
     <script>
         $(document).ready(function() {
             $("#content div[name = install], div[name = lists], #install_button").hide();
-            $('div[name = lists] select').change(function() { sort_select(this); select_select(this); });
+            $('div[name = lists] select').change(function() { sort_option(this); select_option(this); });
         });
 
         /* отображение инсталлятора */
