@@ -51,8 +51,13 @@ function drumroll($user_id) {
 
         // если результат игры просмотрен обоими игроками, то удалем результат
         $checked = mysql_fetch_array(mysql_query("SELECT COUNT(*) AS checked FROM `rooms` WHERE `id_room` = '" . $row['id_room'] . "' AND `checked` = '1';"));
-        if (($checked['checked'] == 2) || ($match == true))
+        if (($checked['checked'] == 2) || ($match == true)) {
             mysql_query("DELETE FROM `rooms` WHERE `id_room` = '" . $row['id_room'] . "';");
+
+            // инкрементируем счёт победителя
+            if (isset($winner_id))
+                mysql_query("UPDATE `users` SET `score` = `score` + 1 WHERE `id_user` = '" . $winner_id . "';");
+        }
     }
 
     return $html;

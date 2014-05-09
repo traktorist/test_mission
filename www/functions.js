@@ -75,8 +75,10 @@ function wait_opponent(user_id) {
             }
             else {
                 result_fight = $.parseJSON(response);
-                if (result_fight)
+                if (result_fight) {
                     $('#game p').html(result_fight);
+                    get_score();
+                }
             }
         });
 }
