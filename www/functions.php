@@ -42,7 +42,7 @@ function drumroll($user_id) {
             else if ($weapons[0]['weapon'] == 'b')
                 $winner_id = ($weapons[1]['weapon'] == 'k') ? $weapons[0]['id_user'] : $weapons[1]['id_user'];
 
-            $winner = mysql_fetch_array(mysql_query("SELECT `login` FROM `users` WHERE `id_user` = '" . $winner_id . "'"));
+            $winner = mysql_fetch_array(mysql_query("SELECT `login` FROM `users_knb` WHERE `id_user` = '" . $winner_id . "'"));
             $html .= $winner['login'];
 
             // отмечаем одну из выброшенных рук (руку текущего игрока), как просмотренную им
@@ -56,7 +56,7 @@ function drumroll($user_id) {
 
             // инкрементируем счёт победителя
             if (isset($winner_id))
-                mysql_query("UPDATE `users` SET `score` = `score` + 1 WHERE `id_user` = '" . $winner_id . "';");
+                mysql_query("UPDATE `users_knb` SET `score` = `score` + 1 WHERE `id_user` = '" . $winner_id . "';");
         }
     }
 

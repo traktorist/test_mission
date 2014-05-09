@@ -12,7 +12,7 @@ switch ($action) {
     case 'get_users': {
         $users = array();
 
-        $result = mysql_query("SELECT * FROM `users`");
+        $result = mysql_query("SELECT * FROM `users_knb`");
         while ($row = mysql_fetch_array($result))
             $users[$row['id_user']] = $row['login'];
 
@@ -22,7 +22,7 @@ switch ($action) {
     case 'get_score': {
         $score_html = '<table border="1"><tr><td>user</td><td>score</td></tr>';
 
-        $result = mysql_query("SELECT * FROM `users` ORDER BY `score` DESC LIMIT 0, 10");
+        $result = mysql_query("SELECT * FROM `users_knb` ORDER BY `score` DESC LIMIT 0, 10");
         while ($row = mysql_fetch_array($result)) {
             $score_html .= '<tr><td>' . $row['login'] . '</td><td>' . $row['score'] . '</td></tr>';
         }
