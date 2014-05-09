@@ -1,173 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Инсталлятор и списки</title>
-
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <title>KNB</title>
     <script src="jquery/jquery-2.0.3.min.js"></script>
+    <script src="functions.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
 
     <script>
         $(document).ready(function() {
-            $("#content div[name = install], div[name = lists], #install_button").hide();
-            $('div[name = lists] select').change(function() { sort_option(this); select_option(this); });
+            get_users();
+            get_score();
+
+            $('button.weapon').click(function() {
+                throw_hand($('#users select :selected').val(), $(this).val());
+            });
+
+            window.wait_timer = setInterval(function() {
+                wait_opponent($('#users select :selected').val())
+            }, 100);
         });
-
-        /* отображение инсталлятора */
-        function show_install() {
-            $("#content div[name = lists]").hide();
-            $("#content div[name = install]").show();
-            $("#content span[name = check_dump], #content span[name = check_connection], #content span[name = install]").html("");
-
-            window.errors_check = 0;                                    // флаг успешной проверки БД и дампа: 0 - норма, иная цифра - число ошибок
-
-            /* запросы на проверку соединения с БД и наличия дампа для импорта */
-            post_query_install('install.php', 'check_dump', $("#content span[name = check_dump]"), 'Поиск файла дампа БД...');
-            post_query_install('install.php', 'check_connection', $("#content span[name = check_connection]"), 'Проверка соединения с БД...');
-        }
-
-        /* отображение списков */
-        function show_lists() {
-            $("#content div[name = install]").hide();
-            $("#content div[name = lists]").show();
-        }
-
-        function post_query_install(file, action, field, wait_phrase) {
-            window.errors_check++;
-            field.html(wait_phrase);
-            $.post(file, {
-                action: action
-            }).done(function(response) {
-                        if (response == true) {                         // если проверка дала положительный результат
-                            field.append(' OK');
-                            window.errors_check--;
-                        }
-                        else
-                            field.append(' Fail');
-
-                        show_install_button();
-                    });
-        }
-
-        function post_query_load_lists(file, action) {
-            $.post(file, {
-                action: action
-            }).done(function(response) {
-                        if (!IsJsonString(response)) {                  // если нет данных из БД или есть проблемы при их получении
-                            alert('Fail load lists')                    // говорим, что всё плохо
-                            return;                                     // и выходим из функции
-                        }
-                        else {
-                            var lists = $.parseJSON(response);
-                            $('div[name = lists] select option:not([value = "0"])').remove();
-
-                            for (var i = 0; i < Object.keys(lists.countries).length; i++)
-                                $('#country select').
-                                    append($('<option></option>').
-                                    attr('value', lists.countries[i][0]).
-                                    text(lists.countries[i][1]));
-
-                            for (var i = 0; i < Object.keys(lists.cities).length; i++)
-                                $('#city select').
-                                    append($('<option></option>').
-                                    attr('value', lists.cities[i][0]).
-                                    attr('data-parent', lists.cities[i][2]).
-                                    text(lists.cities[i][1]));
-
-                            for (var i = 0; i < Object.keys(lists.hotels).length; i++)
-                                $('#hotel select').
-                                    append($('<option></option>').
-                                    attr('value', lists.hotels[i][0]).
-                                    attr('data-parent', lists.hotels[i][2]).
-                                    text(lists.hotels[i][1]));
-                        }
-                    });
-        }
-
-        function IsJsonString(str) {
-            try {
-                JSON.parse(str);
-            } catch (e) {
-                return false;
-            }
-            return true;
-        }
-
-        function show_install_button() {
-            if (window.errors_check == 0)
-                $("#install_button").show();
-            else
-                $("#install_button").hide();
-        }
-
-        function sort_option(select) {                                              // нет времени объяснять - это работает!
-            if ($(select).data('child') != '') {
-                var selected_id = $(select).find(':selected').val();
-                var child_select = $('#' + $(select).data('child') + ' select');
-                $(child_select).find('option').show();
-                if (selected_id != 0) {
-                    $(child_select).find(':not([data-parent = ' + selected_id + '])').hide();
-                    $(child_select).find('[value = "0"]').show();
-                    if (selected_id != $(child_select).find(':selected').data('parent'))
-                        $(child_select).find('[value = "0"]').prop("selected", "selected");
-                }
-
-                sort_option(child_select);
-            }
-        }
-
-        function select_option(select) {                                              // нет времени объяснять - это работает!
-            if ($(select).data('parent') != '') {
-                var parent_select = $('#' + $(select).data('parent') + ' select');
-                var parent_id = $(select).find(':selected').data('parent');
-                $(parent_select).find('option[value = ' + parent_id + ']').prop("selected", "selected");
-
-                select_option(parent_select);
-            }
-        }
     </script>
 </head>
 <body>
-    <div id="main">
-        <div id="menu">
-            <span name="install" onclick="show_install();">Инсталлятор</span>
-            <span name="lists" onclick="show_lists();">Списки</span>
+    <div style="margin: 20px;">
+        <div id="users">
+            <span>Играть за игрока: </span>
+            <select></select>
+        </div>
+        <div id="weapons" style="margin: 20px 0;">
+            <button class="weapon" value="k" style="background-position: 0px 0px;"></button>
+            <button class="weapon" value="n" style="background-position: 52px 0px;"></button>
+            <button class="weapon" value="b" style="background-position: 110px 0px;"></button>
+        </div>
+        <div id="game">
+            <span>Результат игры: </span>
+            <p>...</p>
+        </div>
+        <br />
+        <br />
+        <div id="score">
+            <span>Счёт: </span>
+            <p>...</p>
         </div>
 
-        <div id="content">
-            <div name="install">
-                <span name="check_dump"></span><br />
-                <span name="check_connection"></span><br />
-                <span name="install"></span><br />
-                <br />
-                <input id="install_button" type="button" value="Установить!" onclick="post_query_install('install.php', 'install', $('#content span[name = install]'), 'Создание таблиц БД...');">
-            </div>
-
-            <div name="lists">
-                <div id="country">
-                    <span class="list_name">Страна</span>
-                    <select data-parent="" data-child="city">
-                        <option value="0" selected>Не выбрана</option>
-                    </select>
-                </div>
-
-                <div id="city">
-                    <span class="list_name">Город</span>
-                    <select data-parent="country" data-child="hotel">
-                        <option value="0" selected>Не выбран</option>
-                    </select>
-                </div>
-
-                <div id="hotel">
-                    <span class="list_name">Гостиница</span>
-                    <select data-parent="city" data-child="">
-                        <option value="0" selected>Не выбран</option>
-                    </select>
-                </div>
-
-                <br />
-                <input id="load_button" type="button" value="Загрузить списки!" onclick="post_query_load_lists('install.php', 'load_lists');">
-            </div>
-        </div>
     </div>
 </body>
 </html>
