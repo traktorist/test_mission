@@ -24,6 +24,10 @@ function get_users() {
                 for (var key in users) {
                     $('#users select').append( $('<option value="' + key + '">' + users[key] + '</option>'));
                 }
+
+                window.wait_timer = setInterval(function() {
+                    wait_opponent($('#users select :selected').val())
+                }, 300);
             }
         });
 }
@@ -81,4 +85,11 @@ function wait_opponent(user_id) {
                 }
             }
         });
+}
+
+// очищает результаты всех игр чуть реже, чем опрашивают их игроки - нужно для сброса игры, если второй игрок отсутствует или не посмотрел результат
+function clear_temp() {
+    $.post('/handler.php', {
+        action: 'clear_temp'
+    });
 }

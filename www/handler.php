@@ -20,7 +20,7 @@ switch ($action) {
         break;
     }
     case 'get_score': {
-        $score_html = '<table border="1"><tr><td>user</td><td>score</td></tr>';
+        $score_html = '<table border="1"><tr><td>Имя</td><td>Очки</td></tr>';
 
         $result = mysql_query("SELECT * FROM `users_knb` ORDER BY `score` DESC LIMIT 0, 10");
         while ($row = mysql_fetch_array($result)) {
@@ -60,6 +60,10 @@ switch ($action) {
         // определяем победителя
         $html = drumroll($user_id);
         echo json_encode($html);
+        break;
+    }
+    case 'clear_temp': {
+        mysql_query("DELETE FROM `rooms`");
         break;
     }
     default: {

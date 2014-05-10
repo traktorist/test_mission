@@ -15,14 +15,13 @@
                 throw_hand($('#users select :selected').val(), $(this).val());
             });
 
-            window.wait_timer = setInterval(function() {
-                wait_opponent($('#users select :selected').val())
-            }, 100);
+            window.wait_timer = setInterval(clear_temp, 1111);
         });
     </script>
 </head>
 <body>
-    <div style="margin: 20px;">
+<div style="margin: 20px;">
+    <div style="float: left; margin-right: 100px;">
         <div id="users">
             <span>Играть за игрока: </span>
             <select></select>
@@ -36,13 +35,13 @@
             <span>Результат игры: </span>
             <p>...</p>
         </div>
-        <br />
-        <br />
+    </div>
+    <div>
         <div id="score">
             <span>Счёт: </span>
             <p>...</p>
         </div>
-
     </div>
+</div>
 </body>
 </html>

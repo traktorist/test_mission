@@ -3,3 +3,7 @@ button.weapon {
     height: 50px;
     background-image: url('knb.jpg');
 }
+
+#score td {
+    padding: 10px;
+}

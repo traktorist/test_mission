@@ -17,7 +17,7 @@ function drumroll($user_id) {
     $result = mysql_query("SELECT `id_room`, COUNT(`id_room`) AS count_hands FROM `rooms` GROUP BY `id_room` HAVING count_hands = '2'");
     while ($row = mysql_fetch_array($result)) {
         $match = false;                                                         // флаг совпадения орудий(выброшенных рук) - нужно удалить результат игры
-        $html .= 'room:' . $row['id_room'] . ' - ';
+        //$html .= 'room:' . $row['id_room'] . ' - ';
 
         $weapons = array();
         $res = mysql_query("SELECT * FROM `rooms` WHERE `id_room` = '" . $row['id_room'] . "';");
