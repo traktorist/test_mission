@@ -63,7 +63,10 @@ switch ($action) {
         break;
     }
     case 'clear_temp': {
-        mysql_query("DELETE FROM `rooms`");
+        $count_records = mysql_fetch_array(mysql_query("SELECT COUNT(*) FROM `rooms`"));
+        if ($count_records[0] == 2)
+            mysql_query("DELETE FROM `rooms`");
+
         break;
     }
     default: {

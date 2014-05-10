@@ -82,6 +82,7 @@ function wait_opponent(user_id) {
                 if (result_fight) {
                     $('#game p').html(result_fight);
                     get_score();
+                    $('button.weapon').attr('disabled', false);
                 }
             }
         });

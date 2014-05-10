@@ -13,9 +13,11 @@
 
             $('button.weapon').click(function() {
                 throw_hand($('#users select :selected').val(), $(this).val());
+
+                //$('button.weapon').attr('disabled', true);
             });
 
-            window.wait_timer = setInterval(clear_temp, 1111);
+            window.wait_timer = setInterval(clear_temp, 1000);
         });
     </script>
 </head>
