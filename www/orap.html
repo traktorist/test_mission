@@ -1,9 +1,1712 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поиск / ОРАП</title>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <!-- Bootstrap core CSS -->
+    <link href="http://orap.ostrova-holding.ru/templates/corporate/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://orap.ostrova-holding.ru/templates/corporate/css/bootstrap-reset.css" rel="stylesheet">
+    <!--external css-->
+    <link href="http://orap.ostrova-holding.ru/templates/corporate/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+
+
+    <!-- Custom styles for this template -->
+    <link href="http://orap.ostrova-holding.ru/templates/corporate/css/style.css" rel="stylesheet">
+    <link href="http://orap.ostrova-holding.ru/templates/corporate/css/style-responsive.css" rel="stylesheet" />
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
+    <!--[if lt IE 9]>
+    <script src="http://orap.ostrova-holding.ru/templates/corporate/js/html5shiv.js"></script>
+    <script src="http://orap.ostrova-holding.ru/templates/corporate/js/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU" type="text/javascript"></script>
+
+
+    <script type="text/javascript" src="http://orap.ostrova-holding.ru/templates/corporate/assets/fb/lib/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" src="http://orap.ostrova-holding.ru/templates/corporate/assets/fb/jquery.fancybox.js?v=2.1.5"></script>
+    <link rel="stylesheet" type="text/css" href="http://orap.ostrova-holding.ru/templates/corporate/assets/fb/jquery.fancybox.css?v=2.1.5" media="screen" />
 </head>
+
 <body>
 
+<section id="container" class="">
+<!--header start-->
+<header class="header white-bg">
+    <div class="sidebar-toggle-box">
+        <div data-original-title="Toggle Navigation" data-placement="right" class="icon-reorder tooltips"></div>
+    </div>
+    <!--logo start-->
+    <a href="http://orap.ostrova-holding.ru/" class="logo">ОРАП</a>
+    <!--logo end-->
+    <div class="nav notify-row" id="top_menu">
+
+    </div>
+    <div class="top-nav ">
+        <!--search & user info start-->
+
+
+
+        <ul class="nav pull-right top-menu">
+
+            <!-- user login dropdown start-->
+            <li class="dropdown">
+                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+
+                    <span class="username">Вы авторизованы как: Administrator</span>
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu extended logout">
+                    <div class="log-arrow-up"></div>
+                    <li><a href="#"><i class=" icon-suitcase"></i>ПРОФИЛЬ</a></li>
+
+                    <li><a href="http://orap.ostrova-holding.ru/auth/logout"><i class="icon-key"></i> ВЫЙТИ</a></li>
+                </ul>
+            </li>
+            <!-- user login dropdown end -->
+        </ul>
+
+
+        <!--search & user info end-->
+    </div>
+</header>
+<!--header end-->
+<!--sidebar start-->
+<aside>
+    <div id="sidebar"  class="nav-collapse ">
+        <!-- sidebar menu start-->
+        <ul class="sidebar-menu">
+            <li class="sub-menu">
+                <a href="/filter/pages/field_god=2012" class="">
+                    <i class="icon-tasks"></i>
+                    <span>Все происшествия</span>
+                    <span class="arrow"></span>
+                </a>
+
+            </li>
+
+
+            <li class="active">
+                <a class="" href="/orap">
+                    <i class="icon-dashboard"></i>
+                    <span>Статистика</span>
+                </a>
+            </li>
+
+
+
+        </ul>
+        <!-- sidebar menu end-->
+    </div>
+</aside>
+<!--sidebar end-->
+<!--main content start-->
+<section id="main-content">
+
+
+
+<section class="wrapper">
+<!--state overview start-->
+
+
+<style>
+    #map {
+        width: 100%;
+        height: 600px;
+        margin: 0;
+        padding: 0;
+    }
+    .dataTables_filter {width:250px; float:right}
+    .paginate_enabled_previous {cursor:pointer}
+    .paginate_enabled_next {cursor:pointer}
+
+    #example_length {width:250px;}
+
+    div.years_block div span {
+        margin: 20px 5px;
+        font-size: 25px;
+        cursor: pointer;
+
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    .layout {
+        table-layout: fixed;
+    }
+
+    .layout td.left_block, .layout td.center_block, .layout td.right_block {
+        vertical-align: top;
+    }
+
+    .layout td.left_block, .layout td.right_block {
+        text-align: center;
+    }
+
+    .left_block span, .right_block span {
+        background-color: #FFFFFF;
+        border: 1px solid #DDDDDD;
+        display: block;
+        width: 100%;
+        padding: 6px 12px;
+        margin-top: -1px;
+    }
+
+    .center_block .country a {
+        padding: 10px 15px;
+        margin-top: 2px;
+        margin-bottom: -3px;
+    }
+
+    .left_block {
+        width: 20%;
+    }
+
+    .center_block {
+        width: 100px;
+    }
+
+    .quarters_block a, .quarters_block span {
+        text-align: center;
+        min-width: 20%;
+        height: 38px;
+        font-size: 15px;
+    }
+
+    .right_block {
+        width: 15%;
+    }
+
+</style>
+
+
+
+
+<header class="panel-heading tab-bg-dark-navy-blue tab-right ">
+    <ul class="nav nav-tabs pull-right">
+        <li class="active">
+            <a href="#home" data-toggle="tab">
+                <i class="fa fa-tasks"></i> Таблица
+            </a>
+        </li>
+        <li>
+            <a href="#mapp" data-toggle="tab">
+                <i class="fa fa-map-marker"></i> Карта
+            </a>
+        </li>
+    </ul>
+    <span class="hidden-sm wht-color"></span>
+</header>
+<div class="panel-body">
+<div class="tab-content">
+<div id="home" class="tab-pane active layout" style="height: 1500px;">
+
+
+<table class="layout" cellspacing="0" border="1">
+<tr>
+
+<td class="left_block">
+    <h4>Операторы</h4>
+    <span><a href="/filter/pages/field_god=2012/field_operator=ЮТэйр">ЮТэйр</a></span>
+    <span><a href="/filter/pages/field_god=2012/field_operator=Ак Барс Аэро">Ак Барс Аэро</a></span>
+    <span><a href="/filter/pages/field_god=2012/field_operator=Проскуров-Авиа">Проскуров-Авиа</a></span>
+    <span><a href="/filter/pages/field_god=2012/field_operator=Pecotox Air">Pecotox Air</a></span>
+    <span><a href="/filter/pages/field_god=2012/field_operator=Украинская школа пилотов">Украинская школа пилотов</a></span>
+    <span><a href="/filter/pages/field_god=2012/field_operator=Авиа-Зов">Авиа-Зов</a></span>
+    <span><a href="/filter/pages/field_god=2012/field_operator=ДОСААФ">ДОСААФ</a></span>
+    <span><a href="/filter/pages/field_god=2012/field_operator=Томск Авиа">Томск Авиа</a></span>
+    <span><a href="/filter/pages/field_god=2012/field_operator=Нефтеюганский объединенный авиаотряд">Нефтеюганский объединенный авиаотряд</a></span>
+    <span><a href="/filter/pages/field_god=2012/field_operator=Частное лицо">Частное лицо</a></span>
+    <span><a href="/filter/pages/field_god=2012/field_operator=Интертрансавиа">Интертрансавиа</a></span>
+    <span><a href="/filter/pages/field_god=2012/field_operator=Аэроклуб &quot;Авиасервис&quot;">Аэроклуб &quot;Авиасервис&quot;</a></span>
+    <span><a href="/filter/pages/field_god=2012/field_operator=Петропавловск-Камчатское АП">Петропавловск-Камчатское АП</a></span>
+    <span><a href="/filter/pages/field_god=2012/field_operator=Омский летно-технический колледж гражданской авиации">Омский летно-технический колледж гражданской авиации</a></span>
+    <span><a href="/filter/pages/field_god=2012/field_operator=Завод ЭЛКАП">Завод ЭЛКАП</a></span>
+    <span><a href="/filter/pages/field_god=2012/field_operator=КрасАвиа">КрасАвиа</a></span>
+    <span><a href="/filter/pages/field_god=2012/field_operator=Сасовское летное училище гражданской авиации (СЛУ ГА)">Сасовское летное училище гражданской авиации (СЛУ ГА)</a></span>
+    <span><a href="/filter/pages/field_god=2012/field_operator=Полярные авиалинии">Полярные авиалинии</a></span>
+    <span><a href="/filter/pages/field_god=2012/field_operator=Euro Asia Air">Euro Asia Air</a></span>
+    <span><a href="/filter/pages/field_god=2012/field_operator=Нижневартовскавиа">Нижневартовскавиа</a></span>
+    <span><a href="/filter/pages/field_god=2012/field_operator=Red Wings">Red Wings</a></span>
+</td>
+<td class="center_block" style="min-width: 900px">
+<div class="years_block">
+    <!-- <h3>Года и кварталы</h3>
+    <ul class="pagination">
+                                <li><a href="/filter/pages/field_god=2014" >2014</a></li>
+                                <li><a href="/filter/pages/field_god=2013" >2013</a></li>
+                                <li><a href="/filter/pages/field_god=2012" style="background-color:#EEE !important">2012</a></li>
+                                <li><a href="/filter/pages/field_god=2011" >2011</a></li>
+                                <li><a href="/filter/pages/field_god=2010" >2010</a></li>
+                                <li><a href="/filter/pages/field_god=2009" >2009</a></li>
+                                <li><a href="/filter/pages/field_god=2008" >2008</a></li>
+                                <li><a href="/filter/pages/field_god=2007" >2007</a></li>
+                                <li><a href="/filter/pages/field_god=2006" >2006</a></li>
+                                <li><a href="/filter/pages/field_god=2005" >2005</a></li>
+                                <li><a href="/filter/pages/field_god=2004" >2004</a></li>
+                                <li><a href="/filter/pages/field_god=2003" >2003</a></li>
+                                <li><a href="/filter/pages/field_god=2002" >2002</a></li>
+                                <li><a href="/filter/pages/field_god=2001" >2001</a></li>
+                                <li><a href="/filter/pages/field_god=2000" >2000</a></li>
+                                <li><a href="/filter/pages/field_god=1999" >1999</a></li>
+                                <li><a href="/filter/pages/field_god=1998" >1998</a></li>
+                                <li><a href="/filter/pages/field_god=1997" >1997</a></li>
+                                <li><a href="/filter/pages/field_god=1996" >1996</a></li>
+                                <li><a href="/filter/pages/field_god=1995" >1995</a></li>
+                                <li><a href="/filter/pages/field_god=1994" >1994</a></li>
+                                <li><a href="/filter/pages/field_god=1993" >1993</a></li>
+                                <li><a href="/filter/pages/field_god=1992" >1992</a></li>
+                                <li><a href="/filter/pages/field_god=1991" >1991</a></li>
+                                <li><a href="/filter/pages/field_god=1990" >1990</a></li>
+                                <li><a href="/filter/pages/field_god=1989" >1989</a></li>
+                                <li><a href="/filter/pages/field_god=1988" >1988</a></li>
+                                <li><a href="/filter/pages/field_god=1987" >1987</a></li>
+                                <li><a href="/filter/pages/field_god=1986" >1986</a></li>
+                                <li><a href="/filter/pages/field_god=1985" >1985</a></li>
+                                <li><a href="/filter/pages/field_god=1984" >1984</a></li>
+                                <li><a href="/filter/pages/field_god=1983" >1983</a></li>
+                                <li><a href="/filter/pages/field_god=1982" >1982</a></li>
+                                <li><a href="/filter/pages/field_god=1981" >1981</a></li>
+                                <li><a href="/filter/pages/field_god=1980" >1980</a></li>
+                                <li><a href="/filter/pages/field_god=1979" >1979</a></li>
+                                <li><a href="/filter/pages/field_god=1978" >1978</a></li>
+                                <li><a href="/filter/pages/field_god=1977" >1977</a></li>
+                                <li><a href="/filter/pages/field_god=1976" >1976</a></li>
+                                <li><a href="/filter/pages/field_god=1975" >1975</a></li>
+                                <li><a href="/filter/pages/field_god=1974" >1974</a></li>
+                                <li><a href="/filter/pages/field_god=1973" >1973</a></li>
+                                <li><a href="/filter/pages/field_god=1972" >1972</a></li>
+                                <li><a href="/filter/pages/field_god=1971" >1971</a></li>
+                                <li><a href="/filter/pages/field_god=1970" >1970</a></li>
+                            </ul> -->
+    <table width="100%" style="height: 40px;">
+        <tr>
+            <td style="width: 150px;"><div style="float: left; margin: 0 10px;"></div></td>
+            <td><ul class="pagination quarters_block" style="margin: 0; display: block;"></ul></td>
+        </tr>
+    </table>
+</div>
+<div style="border: solid #7087A3 1px; margin: 0px -2px 0 -2px;">
+<div class="text" style="margin-bottom: -60px;">
+
+<div class="adv-table">
+<table class="display table table-bordered table-striped">
+<thead>
+<tr>
+    <th>Происшествие</th>
+    <th>Дата</th>
+    <th>Тип ВС</th>
+    <th>Регистрация</th>
+    <th>Авиакомпания</th>
+    <th>Место события</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_atr-72_a_k_yuteyr_bliz_a_p_tyumen_(roschino)_">Катастрофа ATR-72 а/к ЮТэйр близ а/п Тюмень (Рощино) </a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_atr-72_a_k_yuteyr_bliz_a_p_tyumen_(roschino)_">02.04.2012</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_atr-72_a_k_yuteyr_bliz_a_p_tyumen_(roschino)_">ATR-72-202</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_atr-72_a_k_yuteyr_bliz_a_p_tyumen_(roschino)_">Россия</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_atr-72_a_k_yuteyr_bliz_a_p_tyumen_(roschino)_">ЮТэйр</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_atr-72_a_k_yuteyr_bliz_a_p_tyumen_(roschino)_">Тюменская область, близ а/п Тюмень (Рощино)</a></td>
+</tr>
+<tr>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_bell-407_a_k_ak_bars_aero_(vladelets_-_oao_tatneft)_bliz_almetevska_">Катастрофа Bell-407 а/к Ак Барс Аэро (владелец - ОАО Татнефть) близ Альметьевска </a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_bell-407_a_k_ak_bars_aero_(vladelets_-_oao_tatneft)_bliz_almetevska_">06.04.2012</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_bell-407_a_k_ak_bars_aero_(vladelets_-_oao_tatneft)_bliz_almetevska_">Bell-407</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_bell-407_a_k_ak_bars_aero_(vladelets_-_oao_tatneft)_bliz_almetevska_">Россия</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_bell-407_a_k_ak_bars_aero_(vladelets_-_oao_tatneft)_bliz_almetevska_">Ак Барс Аэро</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_bell-407_a_k_ak_bars_aero_(vladelets_-_oao_tatneft)_bliz_almetevska_">Республика Татарстан, 3 км северо-западнее дер. Ямаши, Альметьевский район</a></td>
+</tr>
+<tr>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_an-2r_a_k_proskurov-avia_v_sumskoy_oblasti_">Авария Ан-2Р а/к Проскуров-авиа в Сумской области </a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_an-2r_a_k_proskurov-avia_v_sumskoy_oblasti_">23.04.2012</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_an-2r_a_k_proskurov-avia_v_sumskoy_oblasti_">Ан-2Р</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_an-2r_a_k_proskurov-avia_v_sumskoy_oblasti_">Украина</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_an-2r_a_k_proskurov-avia_v_sumskoy_oblasti_">Проскуров-Авиа</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_an-2r_a_k_proskurov-avia_v_sumskoy_oblasti_">Сумская область, Ямпольский район, близ села Княжичи</a></td>
+</tr>
+<tr>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_ka-32a_a_k_pecotox_air_v_rumyinii_">Катастрофа Ка-32А а/к Pecotox Air в Румынии </a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_ka-32a_a_k_pecotox_air_v_rumyinii_">26.04.2012</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_ka-32a_a_k_pecotox_air_v_rumyinii_">Ка-32А</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_ka-32a_a_k_pecotox_air_v_rumyinii_">Румыния</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_ka-32a_a_k_pecotox_air_v_rumyinii_">Pecotox Air</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_ka-32a_a_k_pecotox_air_v_rumyinii_">жудец Тулча, 3 км от н/п Остров</a></td>
+</tr>
+<tr>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_l-410uvp_a_k_ukrainskaya_shkola_pilotov_v_kievskoy_oblasti_">Катастрофа L-410UVP а/к Украинская школа пилотов в Киевской области </a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_l-410uvp_a_k_ukrainskaya_shkola_pilotov_v_kievskoy_oblasti_">10.06.2012</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_l-410uvp_a_k_ukrainskaya_shkola_pilotov_v_kievskoy_oblasti_">Л-410УВП</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_l-410uvp_a_k_ukrainskaya_shkola_pilotov_v_kievskoy_oblasti_">Украина</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_l-410uvp_a_k_ukrainskaya_shkola_pilotov_v_kievskoy_oblasti_">Украинская школа пилотов</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_l-410uvp_a_k_ukrainskaya_shkola_pilotov_v_kievskoy_oblasti_">Киевская область, близ а/д Бородянка</a></td>
+</tr>
+<tr>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_an-2_a_k_avia-zov_v_sverdlovskoy_oblasti_">Катастрофа Ан-2 а/к Авиа-Зов в Свердловской области </a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_an-2_a_k_avia-zov_v_sverdlovskoy_oblasti_">11.06.2012</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_an-2_a_k_avia-zov_v_sverdlovskoy_oblasti_">Ан-2Р</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_an-2_a_k_avia-zov_v_sverdlovskoy_oblasti_">Россия</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_an-2_a_k_avia-zov_v_sverdlovskoy_oblasti_">Авиа-Зов</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_an-2_a_k_avia-zov_v_sverdlovskoy_oblasti_">Свердловская область, 10 км юго-западнее а/д Серов</a></td>
+</tr>
+<tr>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_as-350b3_ecureuil_a_k_utair_bliz_lenska_">Катастрофа AS-350B3 Ecureuil а/к UTair близ Ленска </a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_as-350b3_ecureuil_a_k_utair_bliz_lenska_">04.07.2012</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_as-350b3_ecureuil_a_k_utair_bliz_lenska_">Aerospatiale AS-350B3 Ecureuil</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_as-350b3_ecureuil_a_k_utair_bliz_lenska_">Россия</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_as-350b3_ecureuil_a_k_utair_bliz_lenska_">ЮТэйр</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_as-350b3_ecureuil_a_k_utair_bliz_lenska_">Республика Саха-Якутия, 5 км западнее а/п Ленск</a></td>
+</tr>
+<tr>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_l-410_na_a_d_bolshoe_gryizlovo_">Катастрофа Л-410 на а/д Большое Грызлово</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_l-410_na_a_d_bolshoe_gryizlovo_">22.07.2012</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_l-410_na_a_d_bolshoe_gryizlovo_">Л-410УВП</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_l-410_na_a_d_bolshoe_gryizlovo_">Россия</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_l-410_na_a_d_bolshoe_gryizlovo_">ДОСААФ</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_l-410_na_a_d_bolshoe_gryizlovo_">а/п Большое Грызлово</a></td>
+</tr>
+<tr>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_mi-8t_a_k_tomsk_avia_v_parabelskom_rayone_tomskoy_oblasti_">Авария Ми-8Т а/к Томск Авиа в Парабельском районе Томской области </a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_mi-8t_a_k_tomsk_avia_v_parabelskom_rayone_tomskoy_oblasti_">23.07.2012</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_mi-8t_a_k_tomsk_avia_v_parabelskom_rayone_tomskoy_oblasti_">Ми-8Т</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_mi-8t_a_k_tomsk_avia_v_parabelskom_rayone_tomskoy_oblasti_">Россия</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_mi-8t_a_k_tomsk_avia_v_parabelskom_rayone_tomskoy_oblasti_">Томск Авиа</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_mi-8t_a_k_tomsk_avia_v_parabelskom_rayone_tomskoy_oblasti_">Томская область, Парабельский район, Лугинецкое нефтегазоконденсатное месторождение</a></td>
+</tr>
+<tr>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_ka-32t_nefteyuganskogo_oao_v_turtsii_">Катастрофа Ка-32Т Нефтеюганского ОАО в Турции </a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_ka-32t_nefteyuganskogo_oao_v_turtsii_">09.08.2012</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_ka-32t_nefteyuganskogo_oao_v_turtsii_">Ка-32Т</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_ka-32t_nefteyuganskogo_oao_v_turtsii_">Турция</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_ka-32t_nefteyuganskogo_oao_v_turtsii_">Нефтеюганский объединенный авиаотряд</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_ka-32t_nefteyuganskogo_oao_v_turtsii_">близ Фетхие</a></td>
+</tr>
+<tr>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_mi-2_(vladelets_-_chastnoe_litso)_v_proletarskom_rayone_rostovskoy_oblasti_">Катастрофа Ми-2 (владелец - частное лицо) в Пролетарском районе Ростовской области </a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_mi-2_(vladelets_-_chastnoe_litso)_v_proletarskom_rayone_rostovskoy_oblasti_">10.08.2012</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_mi-2_(vladelets_-_chastnoe_litso)_v_proletarskom_rayone_rostovskoy_oblasti_">Ми-2</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_mi-2_(vladelets_-_chastnoe_litso)_v_proletarskom_rayone_rostovskoy_oblasti_">Россия</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_mi-2_(vladelets_-_chastnoe_litso)_v_proletarskom_rayone_rostovskoy_oblasti_">Частное лицо</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_mi-2_(vladelets_-_chastnoe_litso)_v_proletarskom_rayone_rostovskoy_oblasti_">Ростовская область, Пролетарский район, между х. Валуйки и Соленый</a></td>
+</tr>
+<tr>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa-samoleta-sessna-421-a-k-intertransavia-v-pos-annino-lenigradskoi-obalsti">Катастрофа самолета Сессна 421 а/к Интертрансавиа в пос. Аннино Лениградской обалсти</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa-samoleta-sessna-421-a-k-intertransavia-v-pos-annino-lenigradskoi-obalsti">22.08.2012</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa-samoleta-sessna-421-a-k-intertransavia-v-pos-annino-lenigradskoi-obalsti">Cessna 421 Golden Eagle</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa-samoleta-sessna-421-a-k-intertransavia-v-pos-annino-lenigradskoi-obalsti">Россия</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa-samoleta-sessna-421-a-k-intertransavia-v-pos-annino-lenigradskoi-obalsti">Интертрансавиа</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa-samoleta-sessna-421-a-k-intertransavia-v-pos-annino-lenigradskoi-obalsti">Ленинградская область, Ломоносовский район, пос. Аннино</a></td>
+</tr>
+<tr>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_yak-18t_aerokluba_&quot;aviaservis&quot;_bliz_a_d_lahta_">Катастрофа Як-18Т аэроклуба &quot;Авиасервис&quot; близ а/д Лахта </a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_yak-18t_aerokluba_&quot;aviaservis&quot;_bliz_a_d_lahta_">01.09.2012</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_yak-18t_aerokluba_&quot;aviaservis&quot;_bliz_a_d_lahta_">Як-18Т</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_yak-18t_aerokluba_&quot;aviaservis&quot;_bliz_a_d_lahta_">Россия</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_yak-18t_aerokluba_&quot;aviaservis&quot;_bliz_a_d_lahta_">Аэроклуб &quot;Авиасервис&quot;</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_yak-18t_aerokluba_&quot;aviaservis&quot;_bliz_a_d_lahta_">Архангельская область, Приморский район, близ а/д Лахта, пос. Катунино</a></td>
+</tr>
+<tr>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_an-28_petropavlovsk-kamchatskogo_aviapredpriyatiya_bliz_a_p_palana_">Катастрофа Ан-28 Петропавловск-Камчатского авиапредприятия близ а/п Палана</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_an-28_petropavlovsk-kamchatskogo_aviapredpriyatiya_bliz_a_p_palana_">12.09.2012</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_an-28_petropavlovsk-kamchatskogo_aviapredpriyatiya_bliz_a_p_palana_">AN-28</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_an-28_petropavlovsk-kamchatskogo_aviapredpriyatiya_bliz_a_p_palana_">Россия</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_an-28_petropavlovsk-kamchatskogo_aviapredpriyatiya_bliz_a_p_palana_">Петропавловск-Камчатское АП</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_an-28_petropavlovsk-kamchatskogo_aviapredpriyatiya_bliz_a_p_palana_">Камчатский край, 10,7 км юго-западнее а/п Палана</a></td>
+</tr>
+<tr>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/stolknovenie_dvuh_mi-8t_omskogo_ltk_ga_na_a_d_kalachinsk_">Столкновение двух Ми-8Т Омского ЛТК ГА на а/д Калачинск</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/stolknovenie_dvuh_mi-8t_omskogo_ltk_ga_na_a_d_kalachinsk_">17.09.2012</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/stolknovenie_dvuh_mi-8t_omskogo_ltk_ga_na_a_d_kalachinsk_">MI-8</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/stolknovenie_dvuh_mi-8t_omskogo_ltk_ga_na_a_d_kalachinsk_">Россия</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/stolknovenie_dvuh_mi-8t_omskogo_ltk_ga_na_a_d_kalachinsk_">Омский летно-технический колледж гражданской авиации</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/stolknovenie_dvuh_mi-8t_omskogo_ltk_ga_na_a_d_kalachinsk_">а/п Калачинск</a></td>
+</tr>
+<tr>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_an-2r_zavoda_elkap_v_ivdelskom_rayone_sverdlovskoy_oblasti_">Авария Ан-2Р завода ЭЛКАП в Ивдельском районе Свердловской области </a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_an-2r_zavoda_elkap_v_ivdelskom_rayone_sverdlovskoy_oblasti_">29.09.2012</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_an-2r_zavoda_elkap_v_ivdelskom_rayone_sverdlovskoy_oblasti_">Ан-2Р</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_an-2r_zavoda_elkap_v_ivdelskom_rayone_sverdlovskoy_oblasti_">Россия</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_an-2r_zavoda_elkap_v_ivdelskom_rayone_sverdlovskoy_oblasti_">Завод ЭЛКАП</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_an-2r_zavoda_elkap_v_ivdelskom_rayone_sverdlovskoy_oblasti_">Свердловская область, Ивдельский район, близ н.п. Полуночное</a></td>
+</tr>
+<tr>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_mi-8t_a_k_krasavia_v_pos._yurubchen-5,_krasnoyarskiy_kray_">Катастрофа Ми-8Т а/к КрасАвиа в пос. Юрубчен-5, Красноярский край </a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_mi-8t_a_k_krasavia_v_pos._yurubchen-5,_krasnoyarskiy_kray_">17.10.2012</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_mi-8t_a_k_krasavia_v_pos._yurubchen-5,_krasnoyarskiy_kray_">Ми-8Т</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_mi-8t_a_k_krasavia_v_pos._yurubchen-5,_krasnoyarskiy_kray_">Россия</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_mi-8t_a_k_krasavia_v_pos._yurubchen-5,_krasnoyarskiy_kray_">КрасАвиа</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_mi-8t_a_k_krasavia_v_pos._yurubchen-5,_krasnoyarskiy_kray_"></a></td>
+</tr>
+<tr>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_yak-18t_36_sasovskogo_letnogo_uchilischa_bliz_a_d_pitelino_">Катастрофа Як-18Т/36 Сасовского летного училища близ а/д Пителино </a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_yak-18t_36_sasovskogo_letnogo_uchilischa_bliz_a_d_pitelino_">07.11.2012</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_yak-18t_36_sasovskogo_letnogo_uchilischa_bliz_a_d_pitelino_">Як-18Т/36</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_yak-18t_36_sasovskogo_letnogo_uchilischa_bliz_a_d_pitelino_">Россия</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_yak-18t_36_sasovskogo_letnogo_uchilischa_bliz_a_d_pitelino_">Сасовское летное училище гражданской авиации (СЛУ ГА)</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_yak-18t_36_sasovskogo_letnogo_uchilischa_bliz_a_d_pitelino_">Рязанская область, Пителинский район, близ а/д Пителино</a></td>
+</tr>
+<tr>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_mi-8t_a_k_utair_v_sedelnikovskom_rayone_omskoy_oblasti_">Авария Ми-8Т а/к UTair в Седельниковском районе Омской области </a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_mi-8t_a_k_utair_v_sedelnikovskom_rayone_omskoy_oblasti_">17.11.2012</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_mi-8t_a_k_utair_v_sedelnikovskom_rayone_omskoy_oblasti_">Ми-8Т</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_mi-8t_a_k_utair_v_sedelnikovskom_rayone_omskoy_oblasti_">Россия</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_mi-8t_a_k_utair_v_sedelnikovskom_rayone_omskoy_oblasti_">ЮТэйр</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_mi-8t_a_k_utair_v_sedelnikovskom_rayone_omskoy_oblasti_">Омская область, Седельниковский район, пос. Седельниково</a></td>
+</tr>
+<tr>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_mi-2_(vladelets_-_chastnoe_litso)_v_oktyabrskom_rayone_ivanovskoy_oblasti_">Катастрофа Ми-2 (владелец - частное лицо) в Октябрьском районе Ивановской области </a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_mi-2_(vladelets_-_chastnoe_litso)_v_oktyabrskom_rayone_ivanovskoy_oblasti_">17.11.2012</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_mi-2_(vladelets_-_chastnoe_litso)_v_oktyabrskom_rayone_ivanovskoy_oblasti_">Ми-2</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_mi-2_(vladelets_-_chastnoe_litso)_v_oktyabrskom_rayone_ivanovskoy_oblasti_">Россия</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_mi-2_(vladelets_-_chastnoe_litso)_v_oktyabrskom_rayone_ivanovskoy_oblasti_">Частное лицо</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_mi-2_(vladelets_-_chastnoe_litso)_v_oktyabrskom_rayone_ivanovskoy_oblasti_">Ивановская область, Октябрьский район, 6 км северо-западнее пос. Октябрьский</a></td>
+</tr>
+<tr>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_an-26b-100_a_k_polyarnyie_avialinii_v_a_p_deputatskiy_">Авария Ан-26Б-100 а/к Полярные авиалинии в а/п Депутатский </a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_an-26b-100_a_k_polyarnyie_avialinii_v_a_p_deputatskiy_">21.11.2012</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_an-26b-100_a_k_polyarnyie_avialinii_v_a_p_deputatskiy_">Ан-26Б-100</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_an-26b-100_a_k_polyarnyie_avialinii_v_a_p_deputatskiy_">Россия</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_an-26b-100_a_k_polyarnyie_avialinii_v_a_p_deputatskiy_">Полярные авиалинии</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/avariya_an-26b-100_a_k_polyarnyie_avialinii_v_a_p_deputatskiy_">а/п Депутатский</a></td>
+</tr>
+<tr>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_mi-8t_a_k_euro_asia_air_v_alma-atinskoy_oblasti_">Катастрофа Ми-8Т а/к Euro Asia Air в Алма-Атинской области </a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_mi-8t_a_k_euro_asia_air_v_alma-atinskoy_oblasti_">24.11.2012</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_mi-8t_a_k_euro_asia_air_v_alma-atinskoy_oblasti_">Ми-8Т</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_mi-8t_a_k_euro_asia_air_v_alma-atinskoy_oblasti_">Казахстан</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_mi-8t_a_k_euro_asia_air_v_alma-atinskoy_oblasti_">Euro Asia Air</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_mi-8t_a_k_euro_asia_air_v_alma-atinskoy_oblasti_">Алма-Атинская область, Алакольский район, близ Учарала (Ушарала)</a></td>
+</tr>
+<tr>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/poterya_mi-8amt_a_k_nijnevartovskavia_v_yujnom_sudane_">Потеря Ми-8АМТ а/к Нижневартовскавиа в Южном Судане </a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/poterya_mi-8amt_a_k_nijnevartovskavia_v_yujnom_sudane_">21.12.2012</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/poterya_mi-8amt_a_k_nijnevartovskavia_v_yujnom_sudane_">Ми-8АМТ</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/poterya_mi-8amt_a_k_nijnevartovskavia_v_yujnom_sudane_">Южный Судан</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/poterya_mi-8amt_a_k_nijnevartovskavia_v_yujnom_sudane_">Нижневартовскавиа</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/poterya_mi-8amt_a_k_nijnevartovskavia_v_yujnom_sudane_">близ Ликванголе</a></td>
+</tr>
+<tr>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_tu-204_a_k_red_wings_v_a_p_vnukovo_">Катастрофа Ту-204 а/к Red Wings в а/п Внуково </a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_tu-204_a_k_red_wings_v_a_p_vnukovo_">29.12.2012</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_tu-204_a_k_red_wings_v_a_p_vnukovo_">Ту-204-100</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_tu-204_a_k_red_wings_v_a_p_vnukovo_">Россия</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_tu-204_a_k_red_wings_v_a_p_vnukovo_">Red Wings</a></td>
+    <td><a href="http://orap.ostrova-holding.ru/aviatsionnye-sobytiia/katastrofa_tu-204_a_k_red_wings_v_a_p_vnukovo_">а/п Москва (Внуково)</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="pagination" align="center">
+</div>
+</div>
+</div>
+<div>
+    <!--<h3>Страны</h3>-->
+    <ul class="pagination country" style="margin: 0;">
+        <li><a href="/filter/pages/field_god=2012/field_country=Россия">Россия</a></li>
+        <li><a href="/filter/pages/field_god=2012/field_country=Украина">Украина</a></li>
+        <li><a href="/filter/pages/field_god=2012/field_country=Румыния">Румыния</a></li>
+        <li><a href="/filter/pages/field_god=2012/field_country=Турция">Турция</a></li>
+        <li><a href="/filter/pages/field_god=2012/field_country=Казахстан">Казахстан</a></li>
+        <li><a href="/filter/pages/field_god=2012/field_country=Южный Судан">Южный Судан</a></li>
+    </ul>
+</div>
+</td>
+<!-- <td class="right_block">
+    right column
+</td>
+<div style="clear: both;"></div> -->
+</tr>
+</table>
+</div>
+
+
+<script src="http://api-maps.yandex.ru/2.0-stable/?load=package.full&lang=ru-RU" type="text/javascript"></script>
+
+<script type='text/javascript'>
+ymaps.ready(init);
+
+function paint_point(myMap, coordinates, field_mesto, title, field_date) {
+    myGeoObject = new ymaps.GeoObject({
+        // Описание геометрии.
+        geometry: {
+            type: "Point",
+            coordinates: coordinates
+        },
+        // Свойства.
+        properties: {
+            // Контент метки.
+            /*iconContent: 'а/п Москва (Внуково)',
+             balloonContent: 'Катастрофа Ту-204 а/к Red Wings в а/п Внуково ',
+             hintContent: 'а/п Москва (Внуково)'*/
+            iconContent: field_mesto,
+            balloonContent: field_date + '<br />' + field_mesto + '<br /><strong>' + title + '</strong>',
+            hintContent: field_mesto
+        }
+    }, {
+        // Опции.
+        // Иконка метки будет растягиваться под размер ее содержимого.
+        //preset: 'twirl#lightblueStretchyIcon',
+        preset: 'twirl#airplaneIcon',
+    });
+
+    // Добавляем первый найденный геообъект на карту.
+    myMap.geoObjects.add(myGeoObject);
+
+    // Масштабируем карту на область видимости геообъекта.
+    //myMap.setBounds(bounds);
+}
+
+function init() {
+    // если есть геообъекты для скрытия (в результате сортировки по кварталу), то удаляем карту (для прорисовки заново)
+    if (window.point_tittle_2hidden)
+        window.myMap.destroy();
+
+    var myMap = new ymaps.Map("yandex_map", {
+        center: [50, 60],
+        zoom: 3
+    });
+    window.myMap = myMap;						// делаем глобальную ссылку на объект карты
+
+    myMap.controls
+        // Кнопка изменения масштаба.
+            .add('zoomControl', { left: 5, top: 5 });
+
+
+
+    // у мест (item_id) 2406 2404 2400 есть поля широты и долготы, но их значения пусты
+    var shirota = '';
+    var dolgota = '';
+    //console.log('Тюменская область, близ а/п Тюмень (Рощино)');
+    //console.log(shirota);
+    //console.log(dolgota);
+    // Если широта и долгота объекта указаны, берём их.
+    if (shirota != '' && dolgota != '') {
+        coordinates = new Object([shirota, dolgota]);
+        paint_point(myMap, coordinates, 'Тюменская область, близ а/п Тюмень (Рощино)', 'Катастрофа ATR-72 а/к ЮТэйр близ а/п Тюмень (Рощино) ', '02.04.2012');
+        //console.log(coordinates);
+    }
+
+    // Если не указаны, то вычисляем их геокодированием.
+    else {
+        ymaps.geocode('Тюменская область, близ а/п Тюмень (Рощино)', {
+            results: 1
+        }).then(function(res) {
+                    // Выбираем первый результат геокодирования.
+                    var firstGeoObject = res.geoObjects.get(0);
+
+                    if (firstGeoObject) {
+                        // Вычисляем координаты геообъекта геокодирования.
+                        coordinates = firstGeoObject.geometry.getCoordinates();
+                        //console.log(coordinates);
+
+                        // если нет геообъектов для скрытия (в результате сортировки по кварталу), то рисуем всё
+                        if (!window.point_tittle_2hidden)
+                            paint_point(myMap, coordinates, 'Тюменская область, близ а/п Тюмень (Рощино)', 'Катастрофа ATR-72 а/к ЮТэйр близ а/п Тюмень (Рощино) ', '02.04.2012');
+                        // если была сортировка, то рисуем те геообъекты, которые не отсортированы
+                        else if (!in_array('Катастрофа ATR-72 а/к ЮТэйр близ а/п Тюмень (Рощино) ', window.point_tittle_2hidden))
+                            paint_point(myMap, coordinates, 'Тюменская область, близ а/п Тюмень (Рощино)', 'Катастрофа ATR-72 а/к ЮТэйр близ а/п Тюмень (Рощино) ', '02.04.2012');
+                    }
+                });
+    }
+
+
+    // у мест (item_id) 2406 2404 2400 есть поля широты и долготы, но их значения пусты
+    var shirota = '';
+    var dolgota = '';
+    //console.log('Республика Татарстан, 3 км северо-западнее дер. Ямаши, Альметьевский район');
+    //console.log(shirota);
+    //console.log(dolgota);
+    // Если широта и долгота объекта указаны, берём их.
+    if (shirota != '' && dolgota != '') {
+        coordinates = new Object([shirota, dolgota]);
+        paint_point(myMap, coordinates, 'Республика Татарстан, 3 км северо-западнее дер. Ямаши, Альметьевский район', 'Катастрофа Bell-407 а/к Ак Барс Аэро (владелец - ОАО Татнефть) близ Альметьевска ', '06.04.2012');
+        //console.log(coordinates);
+    }
+
+    // Если не указаны, то вычисляем их геокодированием.
+    else {
+        ymaps.geocode('Республика Татарстан, 3 км северо-западнее дер. Ямаши, Альметьевский район', {
+            results: 1
+        }).then(function(res) {
+                    // Выбираем первый результат геокодирования.
+                    var firstGeoObject = res.geoObjects.get(0);
+
+                    if (firstGeoObject) {
+                        // Вычисляем координаты геообъекта геокодирования.
+                        coordinates = firstGeoObject.geometry.getCoordinates();
+                        //console.log(coordinates);
+
+                        // если нет геообъектов для скрытия (в результате сортировки по кварталу), то рисуем всё
+                        if (!window.point_tittle_2hidden)
+                            paint_point(myMap, coordinates, 'Республика Татарстан, 3 км северо-западнее дер. Ямаши, Альметьевский район', 'Катастрофа Bell-407 а/к Ак Барс Аэро (владелец - ОАО Татнефть) близ Альметьевска ', '06.04.2012');
+                        // если была сортировка, то рисуем те геообъекты, которые не отсортированы
+                        else if (!in_array('Катастрофа Bell-407 а/к Ак Барс Аэро (владелец - ОАО Татнефть) близ Альметьевска ', window.point_tittle_2hidden))
+                            paint_point(myMap, coordinates, 'Республика Татарстан, 3 км северо-западнее дер. Ямаши, Альметьевский район', 'Катастрофа Bell-407 а/к Ак Барс Аэро (владелец - ОАО Татнефть) близ Альметьевска ', '06.04.2012');
+                    }
+                });
+    }
+
+
+    // у мест (item_id) 2406 2404 2400 есть поля широты и долготы, но их значения пусты
+    var shirota = '';
+    var dolgota = '';
+    //console.log('Сумская область, Ямпольский район, близ села Княжичи');
+    //console.log(shirota);
+    //console.log(dolgota);
+    // Если широта и долгота объекта указаны, берём их.
+    if (shirota != '' && dolgota != '') {
+        coordinates = new Object([shirota, dolgota]);
+        paint_point(myMap, coordinates, 'Сумская область, Ямпольский район, близ села Княжичи', 'Авария Ан-2Р а/к Проскуров-авиа в Сумской области ', '23.04.2012');
+        //console.log(coordinates);
+    }
+
+    // Если не указаны, то вычисляем их геокодированием.
+    else {
+        ymaps.geocode('Сумская область, Ямпольский район, близ села Княжичи', {
+            results: 1
+        }).then(function(res) {
+                    // Выбираем первый результат геокодирования.
+                    var firstGeoObject = res.geoObjects.get(0);
+
+                    if (firstGeoObject) {
+                        // Вычисляем координаты геообъекта геокодирования.
+                        coordinates = firstGeoObject.geometry.getCoordinates();
+                        //console.log(coordinates);
+
+                        // если нет геообъектов для скрытия (в результате сортировки по кварталу), то рисуем всё
+                        if (!window.point_tittle_2hidden)
+                            paint_point(myMap, coordinates, 'Сумская область, Ямпольский район, близ села Княжичи', 'Авария Ан-2Р а/к Проскуров-авиа в Сумской области ', '23.04.2012');
+                        // если была сортировка, то рисуем те геообъекты, которые не отсортированы
+                        else if (!in_array('Авария Ан-2Р а/к Проскуров-авиа в Сумской области ', window.point_tittle_2hidden))
+                            paint_point(myMap, coordinates, 'Сумская область, Ямпольский район, близ села Княжичи', 'Авария Ан-2Р а/к Проскуров-авиа в Сумской области ', '23.04.2012');
+                    }
+                });
+    }
+
+
+    // у мест (item_id) 2406 2404 2400 есть поля широты и долготы, но их значения пусты
+    var shirota = '';
+    var dolgota = '';
+    //console.log('жудец Тулча, 3 км от н/п Остров');
+    //console.log(shirota);
+    //console.log(dolgota);
+    // Если широта и долгота объекта указаны, берём их.
+    if (shirota != '' && dolgota != '') {
+        coordinates = new Object([shirota, dolgota]);
+        paint_point(myMap, coordinates, 'жудец Тулча, 3 км от н/п Остров', 'Катастрофа Ка-32А а/к Pecotox Air в Румынии ', '26.04.2012');
+        //console.log(coordinates);
+    }
+
+    // Если не указаны, то вычисляем их геокодированием.
+    else {
+        ymaps.geocode('жудец Тулча, 3 км от н/п Остров', {
+            results: 1
+        }).then(function(res) {
+                    // Выбираем первый результат геокодирования.
+                    var firstGeoObject = res.geoObjects.get(0);
+
+                    if (firstGeoObject) {
+                        // Вычисляем координаты геообъекта геокодирования.
+                        coordinates = firstGeoObject.geometry.getCoordinates();
+                        //console.log(coordinates);
+
+                        // если нет геообъектов для скрытия (в результате сортировки по кварталу), то рисуем всё
+                        if (!window.point_tittle_2hidden)
+                            paint_point(myMap, coordinates, 'жудец Тулча, 3 км от н/п Остров', 'Катастрофа Ка-32А а/к Pecotox Air в Румынии ', '26.04.2012');
+                        // если была сортировка, то рисуем те геообъекты, которые не отсортированы
+                        else if (!in_array('Катастрофа Ка-32А а/к Pecotox Air в Румынии ', window.point_tittle_2hidden))
+                            paint_point(myMap, coordinates, 'жудец Тулча, 3 км от н/п Остров', 'Катастрофа Ка-32А а/к Pecotox Air в Румынии ', '26.04.2012');
+                    }
+                });
+    }
+
+
+    // у мест (item_id) 2406 2404 2400 есть поля широты и долготы, но их значения пусты
+    var shirota = '';
+    var dolgota = '';
+    //console.log('Киевская область, близ а/д Бородянка');
+    //console.log(shirota);
+    //console.log(dolgota);
+    // Если широта и долгота объекта указаны, берём их.
+    if (shirota != '' && dolgota != '') {
+        coordinates = new Object([shirota, dolgota]);
+        paint_point(myMap, coordinates, 'Киевская область, близ а/д Бородянка', 'Катастрофа L-410UVP а/к Украинская школа пилотов в Киевской области ', '10.06.2012');
+        //console.log(coordinates);
+    }
+
+    // Если не указаны, то вычисляем их геокодированием.
+    else {
+        ymaps.geocode('Киевская область, близ а/д Бородянка', {
+            results: 1
+        }).then(function(res) {
+                    // Выбираем первый результат геокодирования.
+                    var firstGeoObject = res.geoObjects.get(0);
+
+                    if (firstGeoObject) {
+                        // Вычисляем координаты геообъекта геокодирования.
+                        coordinates = firstGeoObject.geometry.getCoordinates();
+                        //console.log(coordinates);
+
+                        // если нет геообъектов для скрытия (в результате сортировки по кварталу), то рисуем всё
+                        if (!window.point_tittle_2hidden)
+                            paint_point(myMap, coordinates, 'Киевская область, близ а/д Бородянка', 'Катастрофа L-410UVP а/к Украинская школа пилотов в Киевской области ', '10.06.2012');
+                        // если была сортировка, то рисуем те геообъекты, которые не отсортированы
+                        else if (!in_array('Катастрофа L-410UVP а/к Украинская школа пилотов в Киевской области ', window.point_tittle_2hidden))
+                            paint_point(myMap, coordinates, 'Киевская область, близ а/д Бородянка', 'Катастрофа L-410UVP а/к Украинская школа пилотов в Киевской области ', '10.06.2012');
+                    }
+                });
+    }
+
+
+    // у мест (item_id) 2406 2404 2400 есть поля широты и долготы, но их значения пусты
+    var shirota = '';
+    var dolgota = '';
+    //console.log('Свердловская область, 10 км юго-западнее а/д Серов');
+    //console.log(shirota);
+    //console.log(dolgota);
+    // Если широта и долгота объекта указаны, берём их.
+    if (shirota != '' && dolgota != '') {
+        coordinates = new Object([shirota, dolgota]);
+        paint_point(myMap, coordinates, 'Свердловская область, 10 км юго-западнее а/д Серов', 'Катастрофа Ан-2 а/к Авиа-Зов в Свердловской области ', '11.06.2012');
+        //console.log(coordinates);
+    }
+
+    // Если не указаны, то вычисляем их геокодированием.
+    else {
+        ymaps.geocode('Свердловская область, 10 км юго-западнее а/д Серов', {
+            results: 1
+        }).then(function(res) {
+                    // Выбираем первый результат геокодирования.
+                    var firstGeoObject = res.geoObjects.get(0);
+
+                    if (firstGeoObject) {
+                        // Вычисляем координаты геообъекта геокодирования.
+                        coordinates = firstGeoObject.geometry.getCoordinates();
+                        //console.log(coordinates);
+
+                        // если нет геообъектов для скрытия (в результате сортировки по кварталу), то рисуем всё
+                        if (!window.point_tittle_2hidden)
+                            paint_point(myMap, coordinates, 'Свердловская область, 10 км юго-западнее а/д Серов', 'Катастрофа Ан-2 а/к Авиа-Зов в Свердловской области ', '11.06.2012');
+                        // если была сортировка, то рисуем те геообъекты, которые не отсортированы
+                        else if (!in_array('Катастрофа Ан-2 а/к Авиа-Зов в Свердловской области ', window.point_tittle_2hidden))
+                            paint_point(myMap, coordinates, 'Свердловская область, 10 км юго-западнее а/д Серов', 'Катастрофа Ан-2 а/к Авиа-Зов в Свердловской области ', '11.06.2012');
+                    }
+                });
+    }
+
+
+    // у мест (item_id) 2406 2404 2400 есть поля широты и долготы, но их значения пусты
+    var shirota = '';
+    var dolgota = '';
+    //console.log('Республика Саха-Якутия, 5 км западнее а/п Ленск');
+    //console.log(shirota);
+    //console.log(dolgota);
+    // Если широта и долгота объекта указаны, берём их.
+    if (shirota != '' && dolgota != '') {
+        coordinates = new Object([shirota, dolgota]);
+        paint_point(myMap, coordinates, 'Республика Саха-Якутия, 5 км западнее а/п Ленск', 'Катастрофа AS-350B3 Ecureuil а/к UTair близ Ленска ', '04.07.2012');
+        //console.log(coordinates);
+    }
+
+    // Если не указаны, то вычисляем их геокодированием.
+    else {
+        ymaps.geocode('Республика Саха-Якутия, 5 км западнее а/п Ленск', {
+            results: 1
+        }).then(function(res) {
+                    // Выбираем первый результат геокодирования.
+                    var firstGeoObject = res.geoObjects.get(0);
+
+                    if (firstGeoObject) {
+                        // Вычисляем координаты геообъекта геокодирования.
+                        coordinates = firstGeoObject.geometry.getCoordinates();
+                        //console.log(coordinates);
+
+                        // если нет геообъектов для скрытия (в результате сортировки по кварталу), то рисуем всё
+                        if (!window.point_tittle_2hidden)
+                            paint_point(myMap, coordinates, 'Республика Саха-Якутия, 5 км западнее а/п Ленск', 'Катастрофа AS-350B3 Ecureuil а/к UTair близ Ленска ', '04.07.2012');
+                        // если была сортировка, то рисуем те геообъекты, которые не отсортированы
+                        else if (!in_array('Катастрофа AS-350B3 Ecureuil а/к UTair близ Ленска ', window.point_tittle_2hidden))
+                            paint_point(myMap, coordinates, 'Республика Саха-Якутия, 5 км западнее а/п Ленск', 'Катастрофа AS-350B3 Ecureuil а/к UTair близ Ленска ', '04.07.2012');
+                    }
+                });
+    }
+
+
+    // у мест (item_id) 2406 2404 2400 есть поля широты и долготы, но их значения пусты
+    var shirota = '54.78';
+    var dolgota = '37.64';
+    //console.log('а/п Большое Грызлово');
+    //console.log(shirota);
+    //console.log(dolgota);
+    // Если широта и долгота объекта указаны, берём их.
+    if (shirota != '' && dolgota != '') {
+        coordinates = new Object([shirota, dolgota]);
+        paint_point(myMap, coordinates, 'а/п Большое Грызлово', 'Катастрофа Л-410 на а/д Большое Грызлово', '22.07.2012');
+        //console.log(coordinates);
+    }
+
+    // Если не указаны, то вычисляем их геокодированием.
+    else {
+        ymaps.geocode('а/п Большое Грызлово', {
+            results: 1
+        }).then(function(res) {
+                    // Выбираем первый результат геокодирования.
+                    var firstGeoObject = res.geoObjects.get(0);
+
+                    if (firstGeoObject) {
+                        // Вычисляем координаты геообъекта геокодирования.
+                        coordinates = firstGeoObject.geometry.getCoordinates();
+                        //console.log(coordinates);
+
+                        // если нет геообъектов для скрытия (в результате сортировки по кварталу), то рисуем всё
+                        if (!window.point_tittle_2hidden)
+                            paint_point(myMap, coordinates, 'а/п Большое Грызлово', 'Катастрофа Л-410 на а/д Большое Грызлово', '22.07.2012');
+                        // если была сортировка, то рисуем те геообъекты, которые не отсортированы
+                        else if (!in_array('Катастрофа Л-410 на а/д Большое Грызлово', window.point_tittle_2hidden))
+                            paint_point(myMap, coordinates, 'а/п Большое Грызлово', 'Катастрофа Л-410 на а/д Большое Грызлово', '22.07.2012');
+                    }
+                });
+    }
+
+
+    // у мест (item_id) 2406 2404 2400 есть поля широты и долготы, но их значения пусты
+    var shirota = '';
+    var dolgota = '';
+    //console.log('Томская область, Парабельский район, Лугинецкое нефтегазоконденсатное месторождение');
+    //console.log(shirota);
+    //console.log(dolgota);
+    // Если широта и долгота объекта указаны, берём их.
+    if (shirota != '' && dolgota != '') {
+        coordinates = new Object([shirota, dolgota]);
+        paint_point(myMap, coordinates, 'Томская область, Парабельский район, Лугинецкое нефтегазоконденсатное месторождение', 'Авария Ми-8Т а/к Томск Авиа в Парабельском районе Томской области ', '23.07.2012');
+        //console.log(coordinates);
+    }
+
+    // Если не указаны, то вычисляем их геокодированием.
+    else {
+        ymaps.geocode('Томская область, Парабельский район, Лугинецкое нефтегазоконденсатное месторождение', {
+            results: 1
+        }).then(function(res) {
+                    // Выбираем первый результат геокодирования.
+                    var firstGeoObject = res.geoObjects.get(0);
+
+                    if (firstGeoObject) {
+                        // Вычисляем координаты геообъекта геокодирования.
+                        coordinates = firstGeoObject.geometry.getCoordinates();
+                        //console.log(coordinates);
+
+                        // если нет геообъектов для скрытия (в результате сортировки по кварталу), то рисуем всё
+                        if (!window.point_tittle_2hidden)
+                            paint_point(myMap, coordinates, 'Томская область, Парабельский район, Лугинецкое нефтегазоконденсатное месторождение', 'Авария Ми-8Т а/к Томск Авиа в Парабельском районе Томской области ', '23.07.2012');
+                        // если была сортировка, то рисуем те геообъекты, которые не отсортированы
+                        else if (!in_array('Авария Ми-8Т а/к Томск Авиа в Парабельском районе Томской области ', window.point_tittle_2hidden))
+                            paint_point(myMap, coordinates, 'Томская область, Парабельский район, Лугинецкое нефтегазоконденсатное месторождение', 'Авария Ми-8Т а/к Томск Авиа в Парабельском районе Томской области ', '23.07.2012');
+                    }
+                });
+    }
+
+
+    // у мест (item_id) 2406 2404 2400 есть поля широты и долготы, но их значения пусты
+    var shirota = '';
+    var dolgota = '';
+    //console.log('близ Фетхие');
+    //console.log(shirota);
+    //console.log(dolgota);
+    // Если широта и долгота объекта указаны, берём их.
+    if (shirota != '' && dolgota != '') {
+        coordinates = new Object([shirota, dolgota]);
+        paint_point(myMap, coordinates, 'близ Фетхие', 'Катастрофа Ка-32Т Нефтеюганского ОАО в Турции ', '09.08.2012');
+        //console.log(coordinates);
+    }
+
+    // Если не указаны, то вычисляем их геокодированием.
+    else {
+        ymaps.geocode('близ Фетхие', {
+            results: 1
+        }).then(function(res) {
+                    // Выбираем первый результат геокодирования.
+                    var firstGeoObject = res.geoObjects.get(0);
+
+                    if (firstGeoObject) {
+                        // Вычисляем координаты геообъекта геокодирования.
+                        coordinates = firstGeoObject.geometry.getCoordinates();
+                        //console.log(coordinates);
+
+                        // если нет геообъектов для скрытия (в результате сортировки по кварталу), то рисуем всё
+                        if (!window.point_tittle_2hidden)
+                            paint_point(myMap, coordinates, 'близ Фетхие', 'Катастрофа Ка-32Т Нефтеюганского ОАО в Турции ', '09.08.2012');
+                        // если была сортировка, то рисуем те геообъекты, которые не отсортированы
+                        else if (!in_array('Катастрофа Ка-32Т Нефтеюганского ОАО в Турции ', window.point_tittle_2hidden))
+                            paint_point(myMap, coordinates, 'близ Фетхие', 'Катастрофа Ка-32Т Нефтеюганского ОАО в Турции ', '09.08.2012');
+                    }
+                });
+    }
+
+
+    // у мест (item_id) 2406 2404 2400 есть поля широты и долготы, но их значения пусты
+    var shirota = '';
+    var dolgota = '';
+    //console.log('Ростовская область, Пролетарский район, между х. Валуйки и Соленый');
+    //console.log(shirota);
+    //console.log(dolgota);
+    // Если широта и долгота объекта указаны, берём их.
+    if (shirota != '' && dolgota != '') {
+        coordinates = new Object([shirota, dolgota]);
+        paint_point(myMap, coordinates, 'Ростовская область, Пролетарский район, между х. Валуйки и Соленый', 'Катастрофа Ми-2 (владелец - частное лицо) в Пролетарском районе Ростовской области ', '10.08.2012');
+        //console.log(coordinates);
+    }
+
+    // Если не указаны, то вычисляем их геокодированием.
+    else {
+        ymaps.geocode('Ростовская область, Пролетарский район, между х. Валуйки и Соленый', {
+            results: 1
+        }).then(function(res) {
+                    // Выбираем первый результат геокодирования.
+                    var firstGeoObject = res.geoObjects.get(0);
+
+                    if (firstGeoObject) {
+                        // Вычисляем координаты геообъекта геокодирования.
+                        coordinates = firstGeoObject.geometry.getCoordinates();
+                        //console.log(coordinates);
+
+                        // если нет геообъектов для скрытия (в результате сортировки по кварталу), то рисуем всё
+                        if (!window.point_tittle_2hidden)
+                            paint_point(myMap, coordinates, 'Ростовская область, Пролетарский район, между х. Валуйки и Соленый', 'Катастрофа Ми-2 (владелец - частное лицо) в Пролетарском районе Ростовской области ', '10.08.2012');
+                        // если была сортировка, то рисуем те геообъекты, которые не отсортированы
+                        else if (!in_array('Катастрофа Ми-2 (владелец - частное лицо) в Пролетарском районе Ростовской области ', window.point_tittle_2hidden))
+                            paint_point(myMap, coordinates, 'Ростовская область, Пролетарский район, между х. Валуйки и Соленый', 'Катастрофа Ми-2 (владелец - частное лицо) в Пролетарском районе Ростовской области ', '10.08.2012');
+                    }
+                });
+    }
+
+
+    // у мест (item_id) 2406 2404 2400 есть поля широты и долготы, но их значения пусты
+    var shirota = '';
+    var dolgota = '';
+    //console.log('Ленинградская область, Ломоносовский район, пос. Аннино');
+    //console.log(shirota);
+    //console.log(dolgota);
+    // Если широта и долгота объекта указаны, берём их.
+    if (shirota != '' && dolgota != '') {
+        coordinates = new Object([shirota, dolgota]);
+        paint_point(myMap, coordinates, 'Ленинградская область, Ломоносовский район, пос. Аннино', 'Катастрофа самолета Сессна 421 а/к Интертрансавиа в пос. Аннино Лениградской обалсти', '22.08.2012');
+        //console.log(coordinates);
+    }
+
+    // Если не указаны, то вычисляем их геокодированием.
+    else {
+        ymaps.geocode('Ленинградская область, Ломоносовский район, пос. Аннино', {
+            results: 1
+        }).then(function(res) {
+                    // Выбираем первый результат геокодирования.
+                    var firstGeoObject = res.geoObjects.get(0);
+
+                    if (firstGeoObject) {
+                        // Вычисляем координаты геообъекта геокодирования.
+                        coordinates = firstGeoObject.geometry.getCoordinates();
+                        //console.log(coordinates);
+
+                        // если нет геообъектов для скрытия (в результате сортировки по кварталу), то рисуем всё
+                        if (!window.point_tittle_2hidden)
+                            paint_point(myMap, coordinates, 'Ленинградская область, Ломоносовский район, пос. Аннино', 'Катастрофа самолета Сессна 421 а/к Интертрансавиа в пос. Аннино Лениградской обалсти', '22.08.2012');
+                        // если была сортировка, то рисуем те геообъекты, которые не отсортированы
+                        else if (!in_array('Катастрофа самолета Сессна 421 а/к Интертрансавиа в пос. Аннино Лениградской обалсти', window.point_tittle_2hidden))
+                            paint_point(myMap, coordinates, 'Ленинградская область, Ломоносовский район, пос. Аннино', 'Катастрофа самолета Сессна 421 а/к Интертрансавиа в пос. Аннино Лениградской обалсти', '22.08.2012');
+                    }
+                });
+    }
+
+
+    // у мест (item_id) 2406 2404 2400 есть поля широты и долготы, но их значения пусты
+    var shirota = '';
+    var dolgota = '';
+    //console.log('Архангельская область, Приморский район, близ а/д Лахта, пос. Катунино');
+    //console.log(shirota);
+    //console.log(dolgota);
+    // Если широта и долгота объекта указаны, берём их.
+    if (shirota != '' && dolgota != '') {
+        coordinates = new Object([shirota, dolgota]);
+        paint_point(myMap, coordinates, 'Архангельская область, Приморский район, близ а/д Лахта, пос. Катунино', 'Катастрофа Як-18Т аэроклуба &quot;Авиасервис&quot; близ а/д Лахта ', '01.09.2012');
+        //console.log(coordinates);
+    }
+
+    // Если не указаны, то вычисляем их геокодированием.
+    else {
+        ymaps.geocode('Архангельская область, Приморский район, близ а/д Лахта, пос. Катунино', {
+            results: 1
+        }).then(function(res) {
+                    // Выбираем первый результат геокодирования.
+                    var firstGeoObject = res.geoObjects.get(0);
+
+                    if (firstGeoObject) {
+                        // Вычисляем координаты геообъекта геокодирования.
+                        coordinates = firstGeoObject.geometry.getCoordinates();
+                        //console.log(coordinates);
+
+                        // если нет геообъектов для скрытия (в результате сортировки по кварталу), то рисуем всё
+                        if (!window.point_tittle_2hidden)
+                            paint_point(myMap, coordinates, 'Архангельская область, Приморский район, близ а/д Лахта, пос. Катунино', 'Катастрофа Як-18Т аэроклуба &quot;Авиасервис&quot; близ а/д Лахта ', '01.09.2012');
+                        // если была сортировка, то рисуем те геообъекты, которые не отсортированы
+                        else if (!in_array('Катастрофа Як-18Т аэроклуба &quot;Авиасервис&quot; близ а/д Лахта ', window.point_tittle_2hidden))
+                            paint_point(myMap, coordinates, 'Архангельская область, Приморский район, близ а/д Лахта, пос. Катунино', 'Катастрофа Як-18Т аэроклуба &quot;Авиасервис&quot; близ а/д Лахта ', '01.09.2012');
+                    }
+                });
+    }
+
+
+    // у мест (item_id) 2406 2404 2400 есть поля широты и долготы, но их значения пусты
+    var shirota = '';
+    var dolgota = '';
+    //console.log('Камчатский край, 10,7 км юго-западнее а/п Палана');
+    //console.log(shirota);
+    //console.log(dolgota);
+    // Если широта и долгота объекта указаны, берём их.
+    if (shirota != '' && dolgota != '') {
+        coordinates = new Object([shirota, dolgota]);
+        paint_point(myMap, coordinates, 'Камчатский край, 10,7 км юго-западнее а/п Палана', 'Катастрофа Ан-28 Петропавловск-Камчатского авиапредприятия близ а/п Палана', '12.09.2012');
+        //console.log(coordinates);
+    }
+
+    // Если не указаны, то вычисляем их геокодированием.
+    else {
+        ymaps.geocode('Камчатский край, 10,7 км юго-западнее а/п Палана', {
+            results: 1
+        }).then(function(res) {
+                    // Выбираем первый результат геокодирования.
+                    var firstGeoObject = res.geoObjects.get(0);
+
+                    if (firstGeoObject) {
+                        // Вычисляем координаты геообъекта геокодирования.
+                        coordinates = firstGeoObject.geometry.getCoordinates();
+                        //console.log(coordinates);
+
+                        // если нет геообъектов для скрытия (в результате сортировки по кварталу), то рисуем всё
+                        if (!window.point_tittle_2hidden)
+                            paint_point(myMap, coordinates, 'Камчатский край, 10,7 км юго-западнее а/п Палана', 'Катастрофа Ан-28 Петропавловск-Камчатского авиапредприятия близ а/п Палана', '12.09.2012');
+                        // если была сортировка, то рисуем те геообъекты, которые не отсортированы
+                        else if (!in_array('Катастрофа Ан-28 Петропавловск-Камчатского авиапредприятия близ а/п Палана', window.point_tittle_2hidden))
+                            paint_point(myMap, coordinates, 'Камчатский край, 10,7 км юго-западнее а/п Палана', 'Катастрофа Ан-28 Петропавловск-Камчатского авиапредприятия близ а/п Палана', '12.09.2012');
+                    }
+                });
+    }
+
+
+    // у мест (item_id) 2406 2404 2400 есть поля широты и долготы, но их значения пусты
+    var shirota = '';
+    var dolgota = '';
+    //console.log('а/п Калачинск');
+    //console.log(shirota);
+    //console.log(dolgota);
+    // Если широта и долгота объекта указаны, берём их.
+    if (shirota != '' && dolgota != '') {
+        coordinates = new Object([shirota, dolgota]);
+        paint_point(myMap, coordinates, 'а/п Калачинск', 'Столкновение двух Ми-8Т Омского ЛТК ГА на а/д Калачинск', '17.09.2012');
+        //console.log(coordinates);
+    }
+
+    // Если не указаны, то вычисляем их геокодированием.
+    else {
+        ymaps.geocode('а/п Калачинск', {
+            results: 1
+        }).then(function(res) {
+                    // Выбираем первый результат геокодирования.
+                    var firstGeoObject = res.geoObjects.get(0);
+
+                    if (firstGeoObject) {
+                        // Вычисляем координаты геообъекта геокодирования.
+                        coordinates = firstGeoObject.geometry.getCoordinates();
+                        //console.log(coordinates);
+
+                        // если нет геообъектов для скрытия (в результате сортировки по кварталу), то рисуем всё
+                        if (!window.point_tittle_2hidden)
+                            paint_point(myMap, coordinates, 'а/п Калачинск', 'Столкновение двух Ми-8Т Омского ЛТК ГА на а/д Калачинск', '17.09.2012');
+                        // если была сортировка, то рисуем те геообъекты, которые не отсортированы
+                        else if (!in_array('Столкновение двух Ми-8Т Омского ЛТК ГА на а/д Калачинск', window.point_tittle_2hidden))
+                            paint_point(myMap, coordinates, 'а/п Калачинск', 'Столкновение двух Ми-8Т Омского ЛТК ГА на а/д Калачинск', '17.09.2012');
+                    }
+                });
+    }
+
+
+    // у мест (item_id) 2406 2404 2400 есть поля широты и долготы, но их значения пусты
+    var shirota = '';
+    var dolgota = '';
+    //console.log('Свердловская область, Ивдельский район, близ н.п. Полуночное');
+    //console.log(shirota);
+    //console.log(dolgota);
+    // Если широта и долгота объекта указаны, берём их.
+    if (shirota != '' && dolgota != '') {
+        coordinates = new Object([shirota, dolgota]);
+        paint_point(myMap, coordinates, 'Свердловская область, Ивдельский район, близ н.п. Полуночное', 'Авария Ан-2Р завода ЭЛКАП в Ивдельском районе Свердловской области ', '29.09.2012');
+        //console.log(coordinates);
+    }
+
+    // Если не указаны, то вычисляем их геокодированием.
+    else {
+        ymaps.geocode('Свердловская область, Ивдельский район, близ н.п. Полуночное', {
+            results: 1
+        }).then(function(res) {
+                    // Выбираем первый результат геокодирования.
+                    var firstGeoObject = res.geoObjects.get(0);
+
+                    if (firstGeoObject) {
+                        // Вычисляем координаты геообъекта геокодирования.
+                        coordinates = firstGeoObject.geometry.getCoordinates();
+                        //console.log(coordinates);
+
+                        // если нет геообъектов для скрытия (в результате сортировки по кварталу), то рисуем всё
+                        if (!window.point_tittle_2hidden)
+                            paint_point(myMap, coordinates, 'Свердловская область, Ивдельский район, близ н.п. Полуночное', 'Авария Ан-2Р завода ЭЛКАП в Ивдельском районе Свердловской области ', '29.09.2012');
+                        // если была сортировка, то рисуем те геообъекты, которые не отсортированы
+                        else if (!in_array('Авария Ан-2Р завода ЭЛКАП в Ивдельском районе Свердловской области ', window.point_tittle_2hidden))
+                            paint_point(myMap, coordinates, 'Свердловская область, Ивдельский район, близ н.п. Полуночное', 'Авария Ан-2Р завода ЭЛКАП в Ивдельском районе Свердловской области ', '29.09.2012');
+                    }
+                });
+    }
+
+
+    // у мест (item_id) 2406 2404 2400 есть поля широты и долготы, но их значения пусты
+    var shirota = '';
+    var dolgota = '';
+    //console.log('');
+    //console.log(shirota);
+    //console.log(dolgota);
+    // Если широта и долгота объекта указаны, берём их.
+    if (shirota != '' && dolgota != '') {
+        coordinates = new Object([shirota, dolgota]);
+        paint_point(myMap, coordinates, '', 'Катастрофа Ми-8Т а/к КрасАвиа в пос. Юрубчен-5, Красноярский край ', '17.10.2012');
+        //console.log(coordinates);
+    }
+
+    // Если не указаны, то вычисляем их геокодированием.
+    else {
+        ymaps.geocode('', {
+            results: 1
+        }).then(function(res) {
+                    // Выбираем первый результат геокодирования.
+                    var firstGeoObject = res.geoObjects.get(0);
+
+                    if (firstGeoObject) {
+                        // Вычисляем координаты геообъекта геокодирования.
+                        coordinates = firstGeoObject.geometry.getCoordinates();
+                        //console.log(coordinates);
+
+                        // если нет геообъектов для скрытия (в результате сортировки по кварталу), то рисуем всё
+                        if (!window.point_tittle_2hidden)
+                            paint_point(myMap, coordinates, '', 'Катастрофа Ми-8Т а/к КрасАвиа в пос. Юрубчен-5, Красноярский край ', '17.10.2012');
+                        // если была сортировка, то рисуем те геообъекты, которые не отсортированы
+                        else if (!in_array('Катастрофа Ми-8Т а/к КрасАвиа в пос. Юрубчен-5, Красноярский край ', window.point_tittle_2hidden))
+                            paint_point(myMap, coordinates, '', 'Катастрофа Ми-8Т а/к КрасАвиа в пос. Юрубчен-5, Красноярский край ', '17.10.2012');
+                    }
+                });
+    }
+
+
+    // у мест (item_id) 2406 2404 2400 есть поля широты и долготы, но их значения пусты
+    var shirota = '';
+    var dolgota = '';
+    //console.log('Рязанская область, Пителинский район, близ а/д Пителино');
+    //console.log(shirota);
+    //console.log(dolgota);
+    // Если широта и долгота объекта указаны, берём их.
+    if (shirota != '' && dolgota != '') {
+        coordinates = new Object([shirota, dolgota]);
+        paint_point(myMap, coordinates, 'Рязанская область, Пителинский район, близ а/д Пителино', 'Катастрофа Як-18Т/36 Сасовского летного училища близ а/д Пителино ', '07.11.2012');
+        //console.log(coordinates);
+    }
+
+    // Если не указаны, то вычисляем их геокодированием.
+    else {
+        ymaps.geocode('Рязанская область, Пителинский район, близ а/д Пителино', {
+            results: 1
+        }).then(function(res) {
+                    // Выбираем первый результат геокодирования.
+                    var firstGeoObject = res.geoObjects.get(0);
+
+                    if (firstGeoObject) {
+                        // Вычисляем координаты геообъекта геокодирования.
+                        coordinates = firstGeoObject.geometry.getCoordinates();
+                        //console.log(coordinates);
+
+                        // если нет геообъектов для скрытия (в результате сортировки по кварталу), то рисуем всё
+                        if (!window.point_tittle_2hidden)
+                            paint_point(myMap, coordinates, 'Рязанская область, Пителинский район, близ а/д Пителино', 'Катастрофа Як-18Т/36 Сасовского летного училища близ а/д Пителино ', '07.11.2012');
+                        // если была сортировка, то рисуем те геообъекты, которые не отсортированы
+                        else if (!in_array('Катастрофа Як-18Т/36 Сасовского летного училища близ а/д Пителино ', window.point_tittle_2hidden))
+                            paint_point(myMap, coordinates, 'Рязанская область, Пителинский район, близ а/д Пителино', 'Катастрофа Як-18Т/36 Сасовского летного училища близ а/д Пителино ', '07.11.2012');
+                    }
+                });
+    }
+
+
+    // у мест (item_id) 2406 2404 2400 есть поля широты и долготы, но их значения пусты
+    var shirota = '';
+    var dolgota = '';
+    //console.log('Омская область, Седельниковский район, пос. Седельниково');
+    //console.log(shirota);
+    //console.log(dolgota);
+    // Если широта и долгота объекта указаны, берём их.
+    if (shirota != '' && dolgota != '') {
+        coordinates = new Object([shirota, dolgota]);
+        paint_point(myMap, coordinates, 'Омская область, Седельниковский район, пос. Седельниково', 'Авария Ми-8Т а/к UTair в Седельниковском районе Омской области ', '17.11.2012');
+        //console.log(coordinates);
+    }
+
+    // Если не указаны, то вычисляем их геокодированием.
+    else {
+        ymaps.geocode('Омская область, Седельниковский район, пос. Седельниково', {
+            results: 1
+        }).then(function(res) {
+                    // Выбираем первый результат геокодирования.
+                    var firstGeoObject = res.geoObjects.get(0);
+
+                    if (firstGeoObject) {
+                        // Вычисляем координаты геообъекта геокодирования.
+                        coordinates = firstGeoObject.geometry.getCoordinates();
+                        //console.log(coordinates);
+
+                        // если нет геообъектов для скрытия (в результате сортировки по кварталу), то рисуем всё
+                        if (!window.point_tittle_2hidden)
+                            paint_point(myMap, coordinates, 'Омская область, Седельниковский район, пос. Седельниково', 'Авария Ми-8Т а/к UTair в Седельниковском районе Омской области ', '17.11.2012');
+                        // если была сортировка, то рисуем те геообъекты, которые не отсортированы
+                        else if (!in_array('Авария Ми-8Т а/к UTair в Седельниковском районе Омской области ', window.point_tittle_2hidden))
+                            paint_point(myMap, coordinates, 'Омская область, Седельниковский район, пос. Седельниково', 'Авария Ми-8Т а/к UTair в Седельниковском районе Омской области ', '17.11.2012');
+                    }
+                });
+    }
+
+
+    // у мест (item_id) 2406 2404 2400 есть поля широты и долготы, но их значения пусты
+    var shirota = '';
+    var dolgota = '';
+    //console.log('Ивановская область, Октябрьский район, 6 км северо-западнее пос. Октябрьский');
+    //console.log(shirota);
+    //console.log(dolgota);
+    // Если широта и долгота объекта указаны, берём их.
+    if (shirota != '' && dolgota != '') {
+        coordinates = new Object([shirota, dolgota]);
+        paint_point(myMap, coordinates, 'Ивановская область, Октябрьский район, 6 км северо-западнее пос. Октябрьский', 'Катастрофа Ми-2 (владелец - частное лицо) в Октябрьском районе Ивановской области ', '17.11.2012');
+        //console.log(coordinates);
+    }
+
+    // Если не указаны, то вычисляем их геокодированием.
+    else {
+        ymaps.geocode('Ивановская область, Октябрьский район, 6 км северо-западнее пос. Октябрьский', {
+            results: 1
+        }).then(function(res) {
+                    // Выбираем первый результат геокодирования.
+                    var firstGeoObject = res.geoObjects.get(0);
+
+                    if (firstGeoObject) {
+                        // Вычисляем координаты геообъекта геокодирования.
+                        coordinates = firstGeoObject.geometry.getCoordinates();
+                        //console.log(coordinates);
+
+                        // если нет геообъектов для скрытия (в результате сортировки по кварталу), то рисуем всё
+                        if (!window.point_tittle_2hidden)
+                            paint_point(myMap, coordinates, 'Ивановская область, Октябрьский район, 6 км северо-западнее пос. Октябрьский', 'Катастрофа Ми-2 (владелец - частное лицо) в Октябрьском районе Ивановской области ', '17.11.2012');
+                        // если была сортировка, то рисуем те геообъекты, которые не отсортированы
+                        else if (!in_array('Катастрофа Ми-2 (владелец - частное лицо) в Октябрьском районе Ивановской области ', window.point_tittle_2hidden))
+                            paint_point(myMap, coordinates, 'Ивановская область, Октябрьский район, 6 км северо-западнее пос. Октябрьский', 'Катастрофа Ми-2 (владелец - частное лицо) в Октябрьском районе Ивановской области ', '17.11.2012');
+                    }
+                });
+    }
+
+
+    // у мест (item_id) 2406 2404 2400 есть поля широты и долготы, но их значения пусты
+    var shirota = '';
+    var dolgota = '';
+    //console.log('а/п Депутатский');
+    //console.log(shirota);
+    //console.log(dolgota);
+    // Если широта и долгота объекта указаны, берём их.
+    if (shirota != '' && dolgota != '') {
+        coordinates = new Object([shirota, dolgota]);
+        paint_point(myMap, coordinates, 'а/п Депутатский', 'Авария Ан-26Б-100 а/к Полярные авиалинии в а/п Депутатский ', '21.11.2012');
+        //console.log(coordinates);
+    }
+
+    // Если не указаны, то вычисляем их геокодированием.
+    else {
+        ymaps.geocode('а/п Депутатский', {
+            results: 1
+        }).then(function(res) {
+                    // Выбираем первый результат геокодирования.
+                    var firstGeoObject = res.geoObjects.get(0);
+
+                    if (firstGeoObject) {
+                        // Вычисляем координаты геообъекта геокодирования.
+                        coordinates = firstGeoObject.geometry.getCoordinates();
+                        //console.log(coordinates);
+
+                        // если нет геообъектов для скрытия (в результате сортировки по кварталу), то рисуем всё
+                        if (!window.point_tittle_2hidden)
+                            paint_point(myMap, coordinates, 'а/п Депутатский', 'Авария Ан-26Б-100 а/к Полярные авиалинии в а/п Депутатский ', '21.11.2012');
+                        // если была сортировка, то рисуем те геообъекты, которые не отсортированы
+                        else if (!in_array('Авария Ан-26Б-100 а/к Полярные авиалинии в а/п Депутатский ', window.point_tittle_2hidden))
+                            paint_point(myMap, coordinates, 'а/п Депутатский', 'Авария Ан-26Б-100 а/к Полярные авиалинии в а/п Депутатский ', '21.11.2012');
+                    }
+                });
+    }
+
+
+    // у мест (item_id) 2406 2404 2400 есть поля широты и долготы, но их значения пусты
+    var shirota = '';
+    var dolgota = '';
+    //console.log('Алма-Атинская область, Алакольский район, близ Учарала (Ушарала)');
+    //console.log(shirota);
+    //console.log(dolgota);
+    // Если широта и долгота объекта указаны, берём их.
+    if (shirota != '' && dolgota != '') {
+        coordinates = new Object([shirota, dolgota]);
+        paint_point(myMap, coordinates, 'Алма-Атинская область, Алакольский район, близ Учарала (Ушарала)', 'Катастрофа Ми-8Т а/к Euro Asia Air в Алма-Атинской области ', '24.11.2012');
+        //console.log(coordinates);
+    }
+
+    // Если не указаны, то вычисляем их геокодированием.
+    else {
+        ymaps.geocode('Алма-Атинская область, Алакольский район, близ Учарала (Ушарала)', {
+            results: 1
+        }).then(function(res) {
+                    // Выбираем первый результат геокодирования.
+                    var firstGeoObject = res.geoObjects.get(0);
+
+                    if (firstGeoObject) {
+                        // Вычисляем координаты геообъекта геокодирования.
+                        coordinates = firstGeoObject.geometry.getCoordinates();
+                        //console.log(coordinates);
+
+                        // если нет геообъектов для скрытия (в результате сортировки по кварталу), то рисуем всё
+                        if (!window.point_tittle_2hidden)
+                            paint_point(myMap, coordinates, 'Алма-Атинская область, Алакольский район, близ Учарала (Ушарала)', 'Катастрофа Ми-8Т а/к Euro Asia Air в Алма-Атинской области ', '24.11.2012');
+                        // если была сортировка, то рисуем те геообъекты, которые не отсортированы
+                        else if (!in_array('Катастрофа Ми-8Т а/к Euro Asia Air в Алма-Атинской области ', window.point_tittle_2hidden))
+                            paint_point(myMap, coordinates, 'Алма-Атинская область, Алакольский район, близ Учарала (Ушарала)', 'Катастрофа Ми-8Т а/к Euro Asia Air в Алма-Атинской области ', '24.11.2012');
+                    }
+                });
+    }
+
+
+    // у мест (item_id) 2406 2404 2400 есть поля широты и долготы, но их значения пусты
+    var shirota = '';
+    var dolgota = '';
+    //console.log('близ Ликванголе');
+    //console.log(shirota);
+    //console.log(dolgota);
+    // Если широта и долгота объекта указаны, берём их.
+    if (shirota != '' && dolgota != '') {
+        coordinates = new Object([shirota, dolgota]);
+        paint_point(myMap, coordinates, 'близ Ликванголе', 'Потеря Ми-8АМТ а/к Нижневартовскавиа в Южном Судане ', '21.12.2012');
+        //console.log(coordinates);
+    }
+
+    // Если не указаны, то вычисляем их геокодированием.
+    else {
+        ymaps.geocode('близ Ликванголе', {
+            results: 1
+        }).then(function(res) {
+                    // Выбираем первый результат геокодирования.
+                    var firstGeoObject = res.geoObjects.get(0);
+
+                    if (firstGeoObject) {
+                        // Вычисляем координаты геообъекта геокодирования.
+                        coordinates = firstGeoObject.geometry.getCoordinates();
+                        //console.log(coordinates);
+
+                        // если нет геообъектов для скрытия (в результате сортировки по кварталу), то рисуем всё
+                        if (!window.point_tittle_2hidden)
+                            paint_point(myMap, coordinates, 'близ Ликванголе', 'Потеря Ми-8АМТ а/к Нижневартовскавиа в Южном Судане ', '21.12.2012');
+                        // если была сортировка, то рисуем те геообъекты, которые не отсортированы
+                        else if (!in_array('Потеря Ми-8АМТ а/к Нижневартовскавиа в Южном Судане ', window.point_tittle_2hidden))
+                            paint_point(myMap, coordinates, 'близ Ликванголе', 'Потеря Ми-8АМТ а/к Нижневартовскавиа в Южном Судане ', '21.12.2012');
+                    }
+                });
+    }
+
+
+    // у мест (item_id) 2406 2404 2400 есть поля широты и долготы, но их значения пусты
+    var shirota = '';
+    var dolgota = '';
+    //console.log('а/п Москва (Внуково)');
+    //console.log(shirota);
+    //console.log(dolgota);
+    // Если широта и долгота объекта указаны, берём их.
+    if (shirota != '' && dolgota != '') {
+        coordinates = new Object([shirota, dolgota]);
+        paint_point(myMap, coordinates, 'а/п Москва (Внуково)', 'Катастрофа Ту-204 а/к Red Wings в а/п Внуково ', '29.12.2012');
+        //console.log(coordinates);
+    }
+
+    // Если не указаны, то вычисляем их геокодированием.
+    else {
+        ymaps.geocode('а/п Москва (Внуково)', {
+            results: 1
+        }).then(function(res) {
+                    // Выбираем первый результат геокодирования.
+                    var firstGeoObject = res.geoObjects.get(0);
+
+                    if (firstGeoObject) {
+                        // Вычисляем координаты геообъекта геокодирования.
+                        coordinates = firstGeoObject.geometry.getCoordinates();
+                        //console.log(coordinates);
+
+                        // если нет геообъектов для скрытия (в результате сортировки по кварталу), то рисуем всё
+                        if (!window.point_tittle_2hidden)
+                            paint_point(myMap, coordinates, 'а/п Москва (Внуково)', 'Катастрофа Ту-204 а/к Red Wings в а/п Внуково ', '29.12.2012');
+                        // если была сортировка, то рисуем те геообъекты, которые не отсортированы
+                        else if (!in_array('Катастрофа Ту-204 а/к Red Wings в а/п Внуково ', window.point_tittle_2hidden))
+                            paint_point(myMap, coordinates, 'а/п Москва (Внуково)', 'Катастрофа Ту-204 а/к Red Wings в а/п Внуково ', '29.12.2012');
+                    }
+                });
+    }
+
+
+}
+
+$(document).ready(function() {
+    var dates_arr = new Array();
+    $('div.adv-table table:first').find('tr').slice(1).each(function(i, e) {
+        var date_str = $(e).find('td:eq(1) a').html();				// дата проишествия в строке
+        var date_arr = date_str.split('\.');						// дата проишествия в массиве
+        dates_arr[i] = date_arr[1];
+    });
+
+    var quarters = new Object();
+    quarters[1] = (in_array('01', dates_arr) || in_array('02', dates_arr) || in_array('03', dates_arr)) ? true : false;
+    quarters[2] = (in_array('04', dates_arr) || in_array('05', dates_arr) || in_array('06', dates_arr)) ? true : false;
+    quarters[3] = (in_array('07', dates_arr) || in_array('08', dates_arr) || in_array('09', dates_arr)) ? true : false;
+    quarters[4] = (in_array('10', dates_arr) || in_array('11', dates_arr) || in_array('12', dates_arr)) ? true : false;
+
+    var quarters_html = '';
+    for (var i in quarters) {
+        if (quarters[i])
+            var test = '<li><a href="#" onclick="sort_accidents(' + i + ')">' + i + '-й квартал</a></li>';
+        else
+            var test = '<li><span style="cursor: ne-resize;">' + i + '-й квартал</span></li>';
+
+        quarters_html += test;
+    }
+    quarters_html += '<li><a href="#" onclick="sort_accidents(false)">Все</a></li>';
+    $('.quarters_block').html(quarters_html);
+
+
+    /*$('#years li').each(function(i, e) {
+     console.log(i);
+     });*/
+    window.years = new Array();
+    for (var i = 0, y = 1970; y <= 2014; i++, y++) {
+        years[i] = y;
+    }
+
+    $('div.years_block div').append('<span onclick="prev_year();"> < </span><span class="current_year" data-year="' + 2012 + '"><a href="/filter/pages/field_god=' + 2012 + '">' + 2012 + '</a></span><span onclick="next_year();"> > </span>');
+
+
+});
+
+function prev_year() {
+    var current_year = parseInt($('.current_year').attr('data-year'));
+    var prev_year = current_year - 1;
+    if (in_array((prev_year), window.years)) {
+        $('.current_year').attr('data-year', prev_year);
+        $('.current_year a').html(prev_year);
+        $('.current_year a').attr('href', '/filter/pages/field_god=' + prev_year);
+    }
+}
+
+function next_year() {
+    var current_year = parseInt($('.current_year').attr('data-year'));
+    var next_year = current_year + 1;
+    if (in_array((next_year), window.years)) {
+        $('.current_year').attr('data-year', next_year);
+        $('.current_year a').html(next_year);
+        $('.current_year a').attr('href', '/filter/pages/field_god=' + next_year);
+    }
+}
+
+function sort_accidents(quarters) {
+    window.point_tittle_2hidden = new Array();
+    if (quarters) {
+        $('div.adv-table table:first').find('tr').slice(1).each(function(i, e) {
+            $(e).show();
+            var date_str = $(e).find('td:eq(1) a').html();				// дата проишествия в строке
+            var date_arr = date_str.split('\.');						// дата проишествия в массиве
+
+            var match_str_at = 3 * (quarters - 1);
+            var match_str_to = 3 * quarters;
+            if (!(parseInt(date_arr[1]) > match_str_at && parseInt(date_arr[1]) <= match_str_to)) {
+                $(e).hide();
+                window.point_tittle_2hidden[i] = $(e).find('td:eq(0) a').html();
+            }
+        });
+    }
+    else
+        $('div.adv-table table:first').find('tr').slice(1).each(function(i, e) {
+            $(e).show();
+        });
+
+    init();
+}
+
+function in_array(value, array) {
+    for(var i = 0; i < array.length; i++)
+        if (array[i] == value)
+            return true;
+
+    return false;
+}
+</script>
+
+
+<div id="mapp" class="tab-pane">
+
+<table class="layout" cellspacing="0" border="1">
+    <tr>
+        <td class="left_block">
+        <h4>Операторы</h4>
+            <span><a href="/filter/pages/field_god=2012/field_operator=ЮТэйр">ЮТэйр</a></span>
+            <span><a href="/filter/pages/field_god=2012/field_operator=Ак Барс Аэро">Ак Барс Аэро</a></span>
+            <span><a href="/filter/pages/field_god=2012/field_operator=Проскуров-Авиа">Проскуров-Авиа</a></span>
+            <span><a href="/filter/pages/field_god=2012/field_operator=Pecotox Air">Pecotox Air</a></span>
+            <span><a href="/filter/pages/field_god=2012/field_operator=Украинская школа пилотов">Украинская школа пилотов</a></span>
+            <span><a href="/filter/pages/field_god=2012/field_operator=Авиа-Зов">Авиа-Зов</a></span>
+            <span><a href="/filter/pages/field_god=2012/field_operator=ДОСААФ">ДОСААФ</a></span>
+            <span><a href="/filter/pages/field_god=2012/field_operator=Томск Авиа">Томск Авиа</a></span>
+            <span><a href="/filter/pages/field_god=2012/field_operator=Нефтеюганский объединенный авиаотряд">Нефтеюганский объединенный авиаотряд</a></span>
+            <span><a href="/filter/pages/field_god=2012/field_operator=Частное лицо">Частное лицо</a></span>
+            <span><a href="/filter/pages/field_god=2012/field_operator=Интертрансавиа">Интертрансавиа</a></span>
+            <span><a href="/filter/pages/field_god=2012/field_operator=Аэроклуб &quot;Авиасервис&quot;">Аэроклуб &quot;Авиасервис&quot;</a></span>
+            <span><a href="/filter/pages/field_god=2012/field_operator=Петропавловск-Камчатское АП">Петропавловск-Камчатское АП</a></span>
+            <span><a href="/filter/pages/field_god=2012/field_operator=Омский летно-технический колледж гражданской авиации">Омский летно-технический колледж гражданской авиации</a></span>
+            <span><a href="/filter/pages/field_god=2012/field_operator=Завод ЭЛКАП">Завод ЭЛКАП</a></span>
+            <span><a href="/filter/pages/field_god=2012/field_operator=КрасАвиа">КрасАвиа</a></span>
+            <span><a href="/filter/pages/field_god=2012/field_operator=Сасовское летное училище гражданской авиации (СЛУ ГА)">Сасовское летное училище гражданской авиации (СЛУ ГА)</a></span>
+            <span><a href="/filter/pages/field_god=2012/field_operator=Полярные авиалинии">Полярные авиалинии</a></span>
+            <span><a href="/filter/pages/field_god=2012/field_operator=Euro Asia Air">Euro Asia Air</a></span>
+            <span><a href="/filter/pages/field_god=2012/field_operator=Нижневартовскавиа">Нижневартовскавиа</a></span>
+            <span><a href="/filter/pages/field_god=2012/field_operator=Red Wings">Red Wings</a></span>
+        </td>
+        <td class="center_block">
+            <div class="years_block">
+                <!-- <h3>Года и кварталы</h3>
+                <ul class="pagination">
+                                            <li><a href="/filter/pages/field_god=2014" >2014</a></li>
+                                            <li><a href="/filter/pages/field_god=2013" >2013</a></li>
+                                            <li><a href="/filter/pages/field_god=2012" style="background-color:#EEE !important">2012</a></li>
+                                            <li><a href="/filter/pages/field_god=2011" >2011</a></li>
+                                            <li><a href="/filter/pages/field_god=2010" >2010</a></li>
+                                            <li><a href="/filter/pages/field_god=2009" >2009</a></li>
+                                            <li><a href="/filter/pages/field_god=2008" >2008</a></li>
+                                            <li><a href="/filter/pages/field_god=2007" >2007</a></li>
+                                            <li><a href="/filter/pages/field_god=2006" >2006</a></li>
+                                            <li><a href="/filter/pages/field_god=2005" >2005</a></li>
+                                            <li><a href="/filter/pages/field_god=2004" >2004</a></li>
+                                            <li><a href="/filter/pages/field_god=2003" >2003</a></li>
+                                            <li><a href="/filter/pages/field_god=2002" >2002</a></li>
+                                            <li><a href="/filter/pages/field_god=2001" >2001</a></li>
+                                            <li><a href="/filter/pages/field_god=2000" >2000</a></li>
+                                            <li><a href="/filter/pages/field_god=1999" >1999</a></li>
+                                            <li><a href="/filter/pages/field_god=1998" >1998</a></li>
+                                            <li><a href="/filter/pages/field_god=1997" >1997</a></li>
+                                            <li><a href="/filter/pages/field_god=1996" >1996</a></li>
+                                            <li><a href="/filter/pages/field_god=1995" >1995</a></li>
+                                            <li><a href="/filter/pages/field_god=1994" >1994</a></li>
+                                            <li><a href="/filter/pages/field_god=1993" >1993</a></li>
+                                            <li><a href="/filter/pages/field_god=1992" >1992</a></li>
+                                            <li><a href="/filter/pages/field_god=1991" >1991</a></li>
+                                            <li><a href="/filter/pages/field_god=1990" >1990</a></li>
+                                            <li><a href="/filter/pages/field_god=1989" >1989</a></li>
+                                            <li><a href="/filter/pages/field_god=1988" >1988</a></li>
+                                            <li><a href="/filter/pages/field_god=1987" >1987</a></li>
+                                            <li><a href="/filter/pages/field_god=1986" >1986</a></li>
+                                            <li><a href="/filter/pages/field_god=1985" >1985</a></li>
+                                            <li><a href="/filter/pages/field_god=1984" >1984</a></li>
+                                            <li><a href="/filter/pages/field_god=1983" >1983</a></li>
+                                            <li><a href="/filter/pages/field_god=1982" >1982</a></li>
+                                            <li><a href="/filter/pages/field_god=1981" >1981</a></li>
+                                            <li><a href="/filter/pages/field_god=1980" >1980</a></li>
+                                            <li><a href="/filter/pages/field_god=1979" >1979</a></li>
+                                            <li><a href="/filter/pages/field_god=1978" >1978</a></li>
+                                            <li><a href="/filter/pages/field_god=1977" >1977</a></li>
+                                            <li><a href="/filter/pages/field_god=1976" >1976</a></li>
+                                            <li><a href="/filter/pages/field_god=1975" >1975</a></li>
+                                            <li><a href="/filter/pages/field_god=1974" >1974</a></li>
+                                            <li><a href="/filter/pages/field_god=1973" >1973</a></li>
+                                            <li><a href="/filter/pages/field_god=1972" >1972</a></li>
+                                            <li><a href="/filter/pages/field_god=1971" >1971</a></li>
+                                            <li><a href="/filter/pages/field_god=1970" >1970</a></li>
+                                        </ul> -->
+                <table width="100%" style="height: 40px;">
+                    <tr>
+                        <td style="width: 150px;"><div style="float: left; margin: 0 10px;"></div></td>
+                        <td><ul class="pagination quarters_block" style="margin: 0; display: block; min-width: 15%; font-size: 10px;"></ul></td>
+                    </tr>
+                </table>
+            </div>
+            <div id="yandex_map" style="width: 100%; min-height: 700px; min-width: 750px;"></div>
+            <div>
+                <ul class="pagination country" style="margin: 0;">
+                    <li><a href="/filter/pages/field_god=2012/field_country=Россия">Россия</a></li>
+                    <li><a href="/filter/pages/field_god=2012/field_country=Украина">Украина</a></li>
+                    <li><a href="/filter/pages/field_god=2012/field_country=Румыния">Румыния</a></li>
+                    <li><a href="/filter/pages/field_god=2012/field_country=Турция">Турция</a></li>
+                    <li><a href="/filter/pages/field_god=2012/field_country=Казахстан">Казахстан</a></li>
+                    <li><a href="/filter/pages/field_god=2012/field_country=Южный Судан">Южный Судан</a></li>
+                </ul>
+            </div>
+        </td>
+        <td class="right_block">
+            <h4>Тип АС</h4>
+            <span><a href="/filter/pages/field_god=2012/field_category_ap=катастрофа">катастрофа</a></span>
+            <span><a href="/filter/pages/field_god=2012/field_category_ap=авария">авария</a></span>
+        </td>
+    </tr>
+</table>
+
+
+    <hr />
+</div>
+</div>
+</div>
+
+<script type="text/javascript" language="javascript" src="http://orap.ostrova-holding.ru/templates/corporate/assets/advanced-datatable/media/js/jquery.js"></script>
+<script src="http://orap.ostrova-holding.ru/templates/corporate/js/bootstrap.min.js"></script>
+<script class="include" type="text/javascript" src="http://orap.ostrova-holding.ru/templates/corporate/js/jquery.dcjqaccordion.2.7.js"></script>
+<script src="http://orap.ostrova-holding.ru/templates/corporate/js/jquery.scrollTo.min.js"></script>
+<script src="http://orap.ostrova-holding.ru/templates/corporate/js/jquery.nicescroll.js" type="text/javascript"></script>
+<script type="text/javascript" language="javascript" src="http://orap.ostrova-holding.ru/templates/corporate/assets/advanced-datatable/media/js/jquery.dataTables.js"></script>
+<script src="http://orap.ostrova-holding.ru/templates/corporate/js/respond.min.js" ></script>
+
+
+<!--common script for all pages-->
+<script src="http://orap.ostrova-holding.ru/templates/corporate/js/common-scripts.js"></script>
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+        $('#example').dataTable({
+            "aaSorting": [[ 4, "desc" ]]
+        });
+    });
+</script>
+
+
+
+
+</section>
+</section>
+<!--main content end-->
+</section>			<script type="text/javascript">
+    $(document).ready(function() {$('.fancybox').fancybox();
+
+    });
+</script>
 </body>
 </html>
