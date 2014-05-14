@@ -214,6 +214,7 @@
 
 <td class="left_block">
     <h4>Операторы</h4>
+    <span><a href="/filter/pages/field_god=2012" >ВСЕ</a></span>
     <span><a href="/filter/pages/field_god=2012/field_operator=ЮТэйр">ЮТэйр</a></span>
     <span><a href="/filter/pages/field_god=2012/field_operator=Ак Барс Аэро">Ак Барс Аэро</a></span>
     <span><a href="/filter/pages/field_god=2012/field_operator=Проскуров-Авиа">Проскуров-Авиа</a></span>
@@ -512,6 +513,7 @@
 <div>
     <!--<h3>Страны</h3>-->
     <ul class="pagination country" style="margin: 0;">
+        <li><a href="/filter/pages/field_god=2012">ВСЕ</a></li>
         <li><a href="/filter/pages/field_god=2012/field_country=Россия">Россия</a></li>
         <li><a href="/filter/pages/field_god=2012/field_country=Украина">Украина</a></li>
         <li><a href="/filter/pages/field_god=2012/field_country=Румыния">Румыния</a></li>
@@ -1490,14 +1492,26 @@ $(document).ready(function() {
     var quarters_html = '';
     for (var i in quarters) {
         if (quarters[i])
-            var test = '<li><a href="#" onclick="sort_accidents(' + i + ')">' + i + '-й квартал</a></li>';
+            var test = '<li><a href="#" data-quarter="' + i + '" onclick="sort_accidents(' + i + ')">' + i + '-й квартал</a></li>';
         else
-            var test = '<li><span style="cursor: ne-resize;">' + i + '-й квартал</span></li>';
+            var test = '<li><span data-quarter="null" style="cursor: ne-resize;">' + i + '-й квартал</span></li>';
 
         quarters_html += test;
     }
-    quarters_html += '<li><a href="#" onclick="sort_accidents(false)">Все</a></li>';
+    quarters_html += '<li><a href="#" data-quarter="all" onclick="sort_accidents(false)">Все</a></li>';
     $('.quarters_block').html(quarters_html);
+
+    $('.quarters_block').find('a, span').click(function() {
+        window.quarter = $(this).attr('data-quarter');                                      // выбранный квартал
+        if (window.quarter != 'null') {
+            $('.quarters_block').find('a, span').css('background-color', '#FFFFFF');        // делаем все кварталы белыми
+
+            $('.quarters_block a').each(function() {                                        // отмечаем выбранный квартал серым на блоке с таблицей и на блоке с картой
+                if ($(this).attr('data-quarter') == window.quarter)
+                    $(this).css('background-color', '#EEEEEE');
+            });
+        }
+    });
 
 
     /*$('#years li').each(function(i, e) {
@@ -1573,6 +1587,7 @@ function in_array(value, array) {
     <tr>
         <td class="left_block">
         <h4>Операторы</h4>
+            <span><a href="/filter/pages/field_god=2012" >ВСЕ</a></span>
             <span><a href="/filter/pages/field_god=2012/field_operator=ЮТэйр">ЮТэйр</a></span>
             <span><a href="/filter/pages/field_god=2012/field_operator=Ак Барс Аэро">Ак Барс Аэро</a></span>
             <span><a href="/filter/pages/field_god=2012/field_operator=Проскуров-Авиа">Проскуров-Авиа</a></span>
@@ -1655,6 +1670,7 @@ function in_array(value, array) {
             <div id="yandex_map" style="width: 100%; min-height: 700px; min-width: 750px;"></div>
             <div>
                 <ul class="pagination country" style="margin: 0;">
+                    <li><a href="/filter/pages/field_god=2012">ВСЕ</a></li>
                     <li><a href="/filter/pages/field_god=2012/field_country=Россия">Россия</a></li>
                     <li><a href="/filter/pages/field_god=2012/field_country=Украина">Украина</a></li>
                     <li><a href="/filter/pages/field_god=2012/field_country=Румыния">Румыния</a></li>
@@ -1666,6 +1682,7 @@ function in_array(value, array) {
         </td>
         <td class="right_block">
             <h4>Тип АС</h4>
+            <span><a href="/filter/pages/field_god=2012" >ВСЕ</a></span>
             <span><a href="/filter/pages/field_god=2012/field_category_ap=катастрофа">катастрофа</a></span>
             <span><a href="/filter/pages/field_god=2012/field_category_ap=авария">авария</a></span>
         </td>
